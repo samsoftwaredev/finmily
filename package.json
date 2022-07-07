@@ -1,0 +1,26 @@
+{
+  "name": "finmily",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/app.js",
+  "dependencies": {
+    "@types/express": "^4.17.13",
+    "express": "^4.18.1",
+    "pg": "^8.7.3",
+    "typeorm": "^0.3.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
+  },
+  "scripts": {
+    "compile": "tsc",
+    "compileDev": "tsc -w",
+    "start": "npm run compile && node .",
+    "dev": "nodemon -x ts-node src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Samuel Ruiz",
+  "license": "ISC"
+}
