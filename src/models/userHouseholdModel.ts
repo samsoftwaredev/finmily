@@ -6,19 +6,11 @@ import {
     PrimaryGeneratedColumn,
     JoinColumn,
   } from "typeorm";
+import { ColorScheme } from "../utils";
 import HouseholdModel from "./householdModel";
 import UserModel from "./userModel";
 
-  export enum ColorScheme {
-    WHITE = "white",
-    RED = "red",
-    GREEN = "green",
-    PURPLE = "purple",
-    ORANGE = "orange",
-    BLUE = "blue",
-    YELLOW = "yellow",
-  }
-  
+
   @Entity("user_household")
   class UserHouseholdModel extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")

@@ -9,12 +9,9 @@ import {
   JoinColumn,
   OneToOne,
 } from "typeorm";
-import { constants } from "../utils";
+import { constants, InvitedReasonType } from "../utils";
 import UserModel from "./userModel";
 
-export enum InvitedReason {
-  HOUSEHOLD = "joinHousehold",
-}
 
 @Entity("invitation")
 class InvitationModel extends BaseEntity {
@@ -55,11 +52,11 @@ class InvitationModel extends BaseEntity {
 
   @Column({
     type: "enum",
-    enum: InvitedReason,
-    default: InvitedReason.HOUSEHOLD,
+    enum: InvitedReasonType,
+    default: InvitedReasonType.HOUSEHOLD,
     nullable: false,
   })
-  invited_to: InvitedReason;
+  invited_to: InvitedReasonType;
 
   @Column({ type: "simple-json", nullable: true })
   data: { household_id?: string };

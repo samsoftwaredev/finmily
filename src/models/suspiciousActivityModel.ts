@@ -7,17 +7,7 @@ import {
   DeleteDateColumn,
   UpdateDateColumn,
 } from "typeorm";
-
-export enum EventType {
-  LOOKS_LIKE_A_SCAMMER = "Looks like a scammer",
-  ASK_FOR_PHONE_NUMBER_OR_EMAIL = "Ask for phone number or email",
-  SEND_THEIR_PHONE_NUMBER_OR_EMAIL = "Send their phone number or email",
-  ASK_FOR_ANOTHER_PAYMENT_METHOD = "Ask for another payment method",
-  RUDE_OR_INAPPROPRIATE = "Rude or inappropriate",
-  REQUESTED_MONEY = "Requested Money",
-  SENT_MONEY = "Send money",
-  NONE_OF_THE_ABOVE = "None of the above",
-}
+import { SuspiciousType } from "../utils";
 
 @Entity("suspicious_activity")
 class SuspiciousActivityModel extends BaseEntity {
@@ -60,10 +50,10 @@ class SuspiciousActivityModel extends BaseEntity {
 
   @Column({
     type: "enum",
-    enum: EventType,
+    enum: SuspiciousType,
     nullable: false,
   })
-  event_type: EventType;
+  event_type: SuspiciousType;
 
   @CreateDateColumn() // when the activity was created
   created_at: Date;

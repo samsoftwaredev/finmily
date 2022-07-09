@@ -9,24 +9,9 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm";
+import { HouseholdEventType } from "../utils";
 import HouseholdHistoryModel from "./householdHistoryModel";
 import HouseholdModel from "./householdModel";
-
-export enum EventType {
-  HOUSEHOLD_CREATED = "household_created",
-  HOUSEHOLD_NAME_UPDATED = "household_name_updated",
-  HOUSEHOLD_DELETED = "household_deleted",
-  DESCRIPTION_UPDATED = "description_updated",
-  PICTURE_UPDATED = "picture_updated",
-  USER_REMOVED = "user_removed",
-  USER_INVITED = "user_invited",
-  USER_JOINED = "user_joined",
-  USER_LEFT = "user_left",
-  ADMIN_ADDED = "admin_added",
-  ADMIN_REMOVED = "admin_removed",
-  ADMIN_LEFT = "admin_left",
-  VIEWED_USER_ACCOUNT = "viewed_user_account",
-}
 
 @Entity("household_event")
 class HouseholdEventModel extends BaseEntity {
@@ -35,10 +20,10 @@ class HouseholdEventModel extends BaseEntity {
 
   @Column({
     type: "enum",
-    enum: EventType,
+    enum: HouseholdEventType,
     nullable: false,
   })
-  event_type: EventType;
+  event_type: HouseholdEventType;
 
   @Column({
     type: "text",

@@ -1,12 +1,8 @@
 import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from "typeorm";
+import { HouseholdHistoryType } from "../utils";
 import HouseholdEventModel from "./householdEventModel";
 import HouseholdModel from "./householdModel";
 
-export enum EventType {
-  MESSAGES = "messages",
-  HOUSEHOLD_EVENT = "household_event",
-  LEDGER = "ledger",
-}
 
 @Entity("household_history")
 class HouseholdHistoryModel extends BaseEntity {
@@ -15,10 +11,10 @@ class HouseholdHistoryModel extends BaseEntity {
 
   @Column({
     type: "enum",
-    enum: EventType,
+    enum: HouseholdHistoryType,
     nullable: false,
   })
-  event_type: EventType;
+  event_type: HouseholdHistoryType;
 
   @Column({
     type: "boolean",

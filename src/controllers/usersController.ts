@@ -1,5 +1,7 @@
 import { Router , Request, Response } from "express";
+import { createUserProps } from "utils";
 import { UsersService } from "../services";
+
 
 class UsersController {
   public router: Router;
@@ -15,7 +17,8 @@ class UsersController {
     res.send(this.usersService.index());
   };
   public create = (req: Request, res: Response) => {
-    res.send(this.usersService.create());
+    const props: createUserProps = req.body;
+    res.send(this.usersService.create(props));
   };
   public update = (req: Request, res: Response) => {
     res.send(this.usersService.update());

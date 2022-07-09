@@ -9,23 +9,14 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm";
-import { constants } from "../utils";
+import { constants, GenderType, UserRoleType } from "../utils";
 import AddressModel from "./addressModel";
 import HouseholdModel from "./householdModel";
 import InvitationModel from "./invitationModel";
 import UserHouseholdModel from "./userHouseholdModel";
 import UserHouseholdVisibilityModel from "./userHouseholdVisibilityModel";
 
-export enum UserRole {
-  SYS_ADMIN = "sys_admin",
-  ADMIN = "admin",
-  USER = "user",
-}
 
-export enum Gender {
-  MALE = "male",
-  FEMALE = "female",
-}
 @Entity("user")
 class UserModel extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
@@ -35,6 +26,7 @@ class UserModel extends BaseEntity {
     type: "text",
     unique: true,
     width: constants.MAX_EMAIL_LENGTH,
+    nullable: false
   })
   email: string;
 
@@ -61,10 +53,10 @@ class UserModel extends BaseEntity {
 
   @Column({
     type: "enum",
-    enum: Gender,
+    enum: GenderType,
     nullable: true,
   })
-  gender: Gender;
+  gender: GenderType;
 
   @Column({
     type: "date",
@@ -138,10 +130,10 @@ class UserModel extends BaseEntity {
 
   @Column({
     type: "enum",
-    enum: UserRole,
-    default: UserRole.USER,
+    enum: UserRoleType,
+    default: UserRoleType.USER,
   })
-  role: UserRole;
+  role: UserRoleType;
 
   @OneToMany(() => UserHouseholdModel, (userHousehold) => userHousehold.user)
   userHousehold: UserHouseholdModel[];
@@ -165,7 +157,7 @@ class UserModel extends BaseEntity {
   user_id_invited: UserModel;
 
   // @Column()
-  //   @Generated("uuid")
+  // @Generated("uuid")
   // bank_account_id: string;
 
   // @Column()
