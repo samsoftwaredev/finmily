@@ -3,8 +3,11 @@ import {
     BaseEntity,
     Column,
     ManyToOne,
-    PrimaryColumn,
+    PrimaryGeneratedColumn,
+    JoinColumn,
   } from "typeorm";
+import HouseholdModel from "./householdModel";
+import UserModel from "./userModel";
 
   export enum ColorScheme {
     WHITE = "white",
@@ -18,21 +21,9 @@ import {
   
   @Entity("user_household")
   class UserHouseholdModel extends BaseEntity {
-    @PrimaryColumn({
-      // TODO: foreignKey
-      type: "uuid",
-      nullable: false,
-    })
-    user_id: string;
-    
-    // @ManyToOne(()=>)
-    @PrimaryColumn({
-      // TODO: foreignKey
-      type: "uuid",
-      nullable: false,
-    })
-    household_id: string;
-  
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
+
     @Column({
       type: "boolean",
       default: false, 
@@ -51,7 +42,14 @@ import {
       default: ColorScheme.WHITE,
     })
     color: ColorScheme;
+
+    @ManyToOne(()=>UserModel, user => user.userHousehold)
+    @JoinColumn({ name: "user_id" })
+    user: UserModel
   
+    @ManyToOne(()=>HouseholdModel, household => household.userHousehold)
+    @JoinColumn({ name: "household_id" })
+    household: HouseholdModel
   }
   
   export default UserHouseholdModel;

@@ -5,8 +5,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import { constants } from "../utils";
+import UserModel from "./userModel";
 
 export enum InvitedReason {
   HOUSEHOLD = "joinHousehold",
@@ -18,13 +21,7 @@ class InvitationModel extends BaseEntity {
   id: string;
 
   @Column({
-    // TODO: foreignKey
-    nullable: false,
-    type: "uuid",
-  })
-  invited_by: string;
-
-  @Column({
+    // one to one
     // TODO: foreignKey
     nullable: true,
     type: "uuid",
@@ -73,6 +70,10 @@ class InvitationModel extends BaseEntity {
 
   @Column({ type: "simple-json", nullable: true })
   data: { household_id?: string };
+
+  @ManyToOne(() => UserModel, (user) => user.invitation)
+  @JoinColumn({ name: "invited_by" })
+  user: UserModel;
 }
 
 export default InvitationModel;

@@ -6,8 +6,14 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
 } from "typeorm";
 import { constants } from "../utils";
+import AddressModel from "./addressModel";
+import HouseholdModel from "./householdModel";
+import InvitationModel from "./invitationModel";
+import UserHouseholdModel from "./userHouseholdModel";
+import UserHouseholdVisibilityModel from "./userHouseholdVisibilityModel";
 
 export enum UserRole {
   SYS_ADMIN = "sys_admin",
@@ -141,6 +147,24 @@ class UserModel extends BaseEntity {
     default: UserRole.USER,
   })
   role: UserRole;
+
+  @OneToMany(() => UserHouseholdModel, (userHousehold) => userHousehold.user)
+  userHousehold: UserHouseholdModel[];
+
+  @OneToMany(
+    () => UserHouseholdVisibilityModel,
+    (userHouseholdVisibility) => userHouseholdVisibility.user
+  )
+  userHouseholdVisibility: UserHouseholdVisibilityModel[];
+
+  @OneToMany(() => HouseholdModel, (household) => household.user)
+  household: HouseholdModel[];
+
+  @OneToMany(() => InvitationModel, (invitation) => invitation.user)
+  invitation: InvitationModel[];
+
+  @OneToMany(() => AddressModel, (address) => address.user)
+  address: AddressModel[];
 
   // @Column()
   //   @Generated("uuid")

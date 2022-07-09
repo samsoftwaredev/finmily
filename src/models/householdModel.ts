@@ -7,8 +7,12 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import UserHouseholdModel from "./userHouseholdModel";
+import UserHouseholdVisibilityModel from "./userHouseholdVisibilityModel";
+import UserModel from "./userModel";
 
 @Entity("household")
 class HouseholdModel extends BaseEntity {
@@ -16,13 +20,7 @@ class HouseholdModel extends BaseEntity {
   id: string;
 
   @Column({
-    // TODO: foreignKey
-    nullable: false,
-    type: "uuid",
-  })
-  created_by: string;
-
-  @Column({
+    // one to one
     // TODO: foreignKey
     nullable: false,
     type: "uuid",
@@ -78,7 +76,15 @@ class HouseholdModel extends BaseEntity {
   @UpdateDateColumn() // when the household was last updated
   updated_at: Date;
 
-  // @OneToMany(()=>UserHouseholdModel, userHousehold => userHousehold.)
+  @ManyToOne(() => UserModel, (user) => user.household)
+  @JoinColumn({ name: "created_by" })
+  user: UserModel;
+
+  @OneToMany(()=>UserHouseholdModel, userHousehold => userHousehold.household)
+  userHousehold: UserHouseholdModel[]
+
+  @OneToMany(()=>UserHouseholdVisibilityModel, userHouseholdVisibilityModel => userHouseholdVisibilityModel.household)
+  userHouseholdVisibility: UserHouseholdVisibilityModel[]
 }
 
 export default HouseholdModel;

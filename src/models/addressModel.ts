@@ -5,20 +5,16 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   DeleteDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import { constants } from "../utils";
+import UserModel from "./userModel";
 
 @Entity("address")
 class AddressModel extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
-
-  @Column({
-    // TODO: foreignKey
-    nullable: false,
-    type: "uuid",
-  })
-  user_id: string;
 
   @Column({
     type: "text",
@@ -67,6 +63,10 @@ class AddressModel extends BaseEntity {
 
   @DeleteDateColumn() // if the user deleted the address
   deleted_at: Date;
+
+  @ManyToOne(() => UserModel, (user) => user.address)
+  @JoinColumn({ name: "user_id" })
+  user: UserModel;
 }
 
 export default AddressModel;
