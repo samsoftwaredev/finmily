@@ -9,7 +9,10 @@ import {
   OneToMany,
   ManyToOne,
   JoinColumn,
+  OneToOne,
 } from "typeorm";
+import HouseholdEventModel from "./householdEventModel";
+import HouseholdHistoryModel from "./householdHistoryModel";
 import UserHouseholdModel from "./userHouseholdModel";
 import UserHouseholdVisibilityModel from "./userHouseholdVisibilityModel";
 import UserModel from "./userModel";
@@ -80,11 +83,29 @@ class HouseholdModel extends BaseEntity {
   @JoinColumn({ name: "created_by" })
   user: UserModel;
 
-  @OneToMany(()=>UserHouseholdModel, userHousehold => userHousehold.household)
-  userHousehold: UserHouseholdModel[]
+  @OneToMany(
+    () => UserHouseholdModel,
+    (userHousehold) => userHousehold.household
+  )
+  userHousehold: UserHouseholdModel[];
 
-  @OneToMany(()=>UserHouseholdVisibilityModel, userHouseholdVisibilityModel => userHouseholdVisibilityModel.household)
-  userHouseholdVisibility: UserHouseholdVisibilityModel[]
+  @OneToMany(
+    () => UserHouseholdVisibilityModel,
+    (userHouseholdVisibility) => userHouseholdVisibility.household
+  )
+  userHouseholdVisibility: UserHouseholdVisibilityModel[];
+
+  @OneToMany(
+    () => HouseholdEventModel,
+    (householdEvent) => householdEvent.household
+  )
+  householdEvent: HouseholdEventModel[];
+
+  @OneToOne(
+    () => HouseholdHistoryModel,
+    (householdHistory) => householdHistory.household
+  )
+  householdHistory: HouseholdHistoryModel;
 }
 
 export default HouseholdModel;

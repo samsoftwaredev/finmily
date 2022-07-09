@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
+  OneToOne,
 } from "typeorm";
 import { constants } from "../utils";
 import AddressModel from "./addressModel";
@@ -100,12 +101,6 @@ class UserModel extends BaseEntity {
   last_login: Date;
 
   @Column({
-    type: "uuid",
-    nullable: true,
-  }) // track if the user joined the app bc an invite sent by another user
-  invitation_id: string;
-
-  @Column({
     type: "boolean",
     default: false,
   })
@@ -160,11 +155,14 @@ class UserModel extends BaseEntity {
   @OneToMany(() => HouseholdModel, (household) => household.user)
   household: HouseholdModel[];
 
-  @OneToMany(() => InvitationModel, (invitation) => invitation.user)
-  invitation: InvitationModel[];
+  @OneToMany(() => InvitationModel, (invitation) => invitation.invited_by)
+  invited_by: InvitationModel[];
 
   @OneToMany(() => AddressModel, (address) => address.user)
   address: AddressModel[];
+
+  @OneToOne(() => InvitationModel, (invitation) => invitation.user_id_invited)
+  user_id_invited: UserModel;
 
   // @Column()
   //   @Generated("uuid")

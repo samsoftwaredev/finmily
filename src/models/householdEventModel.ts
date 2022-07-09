@@ -6,7 +6,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   DeleteDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
+import HouseholdHistoryModel from "./householdHistoryModel";
+import HouseholdModel from "./householdModel";
 
 export enum EventType {
   HOUSEHOLD_CREATED = "household_created",
@@ -25,16 +29,9 @@ export enum EventType {
 }
 
 @Entity("household_event")
-class householdEventModel extends BaseEntity {
+class HouseholdEventModel extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
-
-  @Column({
-    // TODO: foreignKey
-    type: "uuid",
-    nullable: false,
-  })
-  household_id: string;
 
   @Column({
     type: "enum",
@@ -57,6 +54,14 @@ class householdEventModel extends BaseEntity {
 
   @CreateDateColumn() // last time user permission were updated
   deleted_at: Date;
+
+  @ManyToOne(() => HouseholdHistoryModel, (householdHistory) => householdHistory.householdEvent)
+  @JoinColumn({ name: "household_history_id" })
+  householdHistory: HouseholdHistoryModel;
+
+  @ManyToOne(() => HouseholdModel, (household) => household.householdEvent)
+  @JoinColumn({ name: "household_id" })
+  household: HouseholdModel;
 }
 
-export default householdEventModel;
+export default HouseholdEventModel;
