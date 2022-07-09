@@ -1,4 +1,4 @@
-import {Server} from "./config"
+import { Server } from "./config";
 
 const server = new Server();
 server.start();
