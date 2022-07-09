@@ -1,5 +1,16 @@
 import { createConnection } from "typeorm";
-import {log} from "../utils";
+import { log } from "../utils";
+import {
+  UserModel,
+  UserHouseholdModel,
+  UserHouseholdVisibilityModel,
+  SuspiciousActivityModel,
+  InvitationModel,
+  HouseholdModel,
+  HouseholdHistoryModel,
+  HouseholdEventModel,
+  AddressModel,
+} from "../models";
 
 const DB_TYPE = "postgres";
 const DB_HOST = "localhost";
@@ -21,6 +32,18 @@ class Database {
         password: DB_PASSWORD,
         username: DB_USERNAME,
         database: DB_DATABASE,
+        entities: [
+          UserModel,
+          UserHouseholdModel,
+          UserHouseholdVisibilityModel,
+          SuspiciousActivityModel,
+          InvitationModel,
+          HouseholdModel,
+          HouseholdHistoryModel,
+          HouseholdEventModel,
+          AddressModel,
+        ],
+        synchronize: true,
       });
       log.debugger("Connected to Postgres");
     } catch (error) {
