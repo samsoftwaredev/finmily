@@ -1,6 +1,6 @@
 import { UserRoleType } from "./enum";
 
-interface createUserProps {
+export interface userProps {
   email: string;
   first_name: string;
   last_name: string;
@@ -18,5 +18,3 @@ interface createUserProps {
   is_2fa_enabled?: boolean;
   role?: UserRoleType;
 }
-
-export { createUserProps };

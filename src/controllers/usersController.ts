@@ -1,5 +1,5 @@
 import { Router , Request, Response } from "express";
-import { createUserProps } from "utils";
+import { HttpStatusCode, userProps } from "../utils";
 import { UsersService } from "../services";
 
 
@@ -16,10 +16,20 @@ class UsersController {
   public index = (req: Request, res: Response) => {
     res.send(this.usersService.index());
   };
-  public create = (req: Request, res: Response) => {
-    const props: createUserProps = req.body;
-    res.send(this.usersService.create(props));
+
+  public create = async (req: Request, res: Response) => {
+    const props: userProps = req.body;
+    try{
+      const newUser = await this.usersService.create(props)
+      res.status(HttpStatusCode.OK).send(newUser);
+    } catch (error) {
+      res.status(error.httpCode).json({
+        name: error.name,
+        message: error.message
+      })
+    }
   };
+
   public update = (req: Request, res: Response) => {
     res.send(this.usersService.update());
   };

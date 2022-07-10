@@ -1,15 +1,27 @@
-import { createUserProps } from "utils";
+import { UserModel } from "../models";
+import { log, userProps, HTTP500Error } from "../utils";
 
 class UsersService {
   constructor() {}
-  
+
   public index = () => {
     return "index";
   };
 
-  public create = (props: createUserProps)=> {
-    const {email, first_name, last_name} = props;
-    return "create" + email + first_name + last_name;
+  public create = async (props: userProps) => {
+    const { email, first_name, last_name } = props;
+    try {
+      const newUser = UserModel.create({
+        email: email,
+        first_name: first_name,
+        last_name: last_name,
+      });
+      await newUser.save();
+      return newUser;
+    } catch (error) {
+      log.error(error);
+      throw new HTTP500Error("Unable to create user in database")
+    }
   };
 
   public update = () => {
