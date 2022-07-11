@@ -13,18 +13,21 @@ import {
 } from "../models";
 
 class Database {
-  connection = null;
+  private static appDataSource = null;
+
   constructor() {}
 
-  start = async () => {
+  static getManager = () => Database.appDataSource.manager;
+
+  public start = async () => {
     try {
-      this.connection = await new DataSource({
+      Database.appDataSource = await new DataSource({
         type: "postgres",
-        host: databaseENV.DB_HOST,
-        port: databaseENV.DB_PORT,
-        password: databaseENV.DB_PASSWORD,
-        username: databaseENV.DB_USERNAME,
-        database: databaseENV.DB_DATABASE,
+        host: process.env.DB_HOST,
+        port: +process.env.DB_PORT,
+        password: process.env.DB_PASSWORD,
+        username: process.env.DB_USERNAME,
+        database: process.env.DB_DATABASE,
         entities: [
           UserModel,
           UserHouseholdModel,
@@ -37,11 +40,20 @@ class Database {
           AddressModel,
         ],
         synchronize: true,
+        // logging: isDevEnvironment(),
       });
-      log.info("Connected to Postgres");
+      log.info("Connected to Postgres a port: " + databaseENV.DB_PORT);
     } catch (error) {
       log.error(error);
       throw new Error("Unable to connect Postgres");
+    }
+
+    try {
+      await Database.appDataSource.initialize();
+      log.info("Data Source has been initialized");
+    } catch (error) {
+      log.error(error);
+      throw new Error("Error during Data Source initialization");
     }
   };
 }

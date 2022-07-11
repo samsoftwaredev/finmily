@@ -1,7 +1,8 @@
+import { Database } from "../config";
 import { UserModel } from "../models";
-import { log, userProps, HTTP500Error } from "../utils";
+import { HTTP500Error, log, userProps } from "../utils";
 
-class UsersService {
+class UserService {
   constructor() {}
 
   public index = () => {
@@ -11,7 +12,7 @@ class UsersService {
   public create = async (props: userProps) => {
     const { email, first_name, last_name } = props;
     try {
-      const newUser = UserModel.create({
+      const newUser = Database.getManager().create(UserModel, {
         email: email,
         first_name: first_name,
         last_name: last_name,
@@ -33,4 +34,4 @@ class UsersService {
   };
 }
 
-export default UsersService;
+export default UserService;

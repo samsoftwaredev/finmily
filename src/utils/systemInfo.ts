@@ -1,4 +1,7 @@
-// TODO: implement isDevEnvironment
-const isDevEnvironment = () => true
+import { environmentsENV } from "./constants";
 
-export {isDevEnvironment}
+const isDevEnvironment = () => environmentsENV.IS_DEV;
+const isProductionEnvironment = () => environmentsENV.IS_PRODUCTION;
+const isTestingEnvironment = () => environmentsENV.IS_TESTING;
+
+export { isDevEnvironment, isProductionEnvironment, isTestingEnvironment };

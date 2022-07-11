@@ -1,13 +1,15 @@
-
 const variablesENV = {
   PORT: +process.env.PORT,
+  PRODUCTION: "production",
+  DEVELOPMENT: "development",
+  TESTING: "testing"
 };
 
 const environmentsENV = {
-  IS_PRODUCTION: !!process.env.IS_PRODUCTION,
-  IS_DEV: !!process.env.IS_DEV,
-  IS_TESTING: !!process.env.IS_TESTING,
-}
+  IS_PRODUCTION: process.env.NODE_ENV === variablesENV.PRODUCTION,
+  IS_DEV: process.env.NODE_ENV === variablesENV.DEVELOPMENT,
+  IS_TESTING: process.env.NODE_ENV === variablesENV.TESTING,
+};
 
 const databaseENV = {
   DB_HOST: process.env.DB_HOST,
@@ -31,5 +33,3 @@ const validation = {
 };
 
 export { validation, variablesENV, databaseENV, environmentsENV };
-
-
