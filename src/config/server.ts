@@ -1,6 +1,8 @@
-import { UsersController } from "../controllers";
 import express, { Request, Response } from "express";
+import cors from "cors"
+import { UsersController } from "../controllers";
 import Database from "./database";
+import { errorHandlerMiddleware } from "../middlewares";
 
 const PORT = 3030;
 // create and setup express app
@@ -32,8 +34,10 @@ class Server {
     });
   };
 
-  middleware = () => {
+  middleware = async () => {
     this.app.use(express.json());
+    this.app.use(cors());
+    this.app.use(errorHandlerMiddleware);
   };
   
   start = async () => {
