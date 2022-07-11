@@ -6,27 +6,16 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import { SuspiciousType } from "../utils";
+import UserModel from "./userModel";
 
 @Entity("suspicious_activity")
 class SuspiciousActivityModel extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
-
-  @Column({
-    // TODO: foreignKey
-    type: "uuid",
-    nullable: false,
-  })
-  reported_by: string;
-
-  @Column({
-    // TODO: foreignKey
-    type: "uuid",
-    nullable: false,
-  })
-  user_id_reported: string;
 
   @Column({
     type: "text",
@@ -63,6 +52,14 @@ class SuspiciousActivityModel extends BaseEntity {
 
   @UpdateDateColumn() // when the user last updated their profile
   updated_at: Date;
+
+  @ManyToOne(() => UserModel, (user) => user.reported_by)
+  @JoinColumn({ name: "reported_by" })
+  reported_by: UserModel;
+
+  @ManyToOne(() => UserModel, (user) => user.user_id_reported)
+  @JoinColumn({ name: "user_id_reported" })
+  user_id_reported: UserModel;
 }
 
 export default SuspiciousActivityModel;

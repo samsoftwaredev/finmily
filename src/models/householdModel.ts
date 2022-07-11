@@ -23,14 +23,6 @@ class HouseholdModel extends BaseEntity {
   id: string;
 
   @Column({
-    // one to one
-    // TODO: foreignKey
-    nullable: false,
-    type: "uuid",
-  })
-  history_id: string;
-
-  @Column({
     type: "text",
     nullable: false,
     width: 64,

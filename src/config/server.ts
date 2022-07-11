@@ -1,7 +1,8 @@
 import express, { Request, Response } from "express";
 import cors from "cors"
-import { UsersController } from "../controllers";
 import Database from "./database";
+import { log } from "../utils";
+import { UsersController } from "../controllers";
 import { errorHandlerMiddleware } from "../middlewares";
 
 const PORT = 3030;
@@ -46,7 +47,7 @@ class Server {
     
     const PORT = this.app.get("port");
     this.app.listen(PORT, () => {
-      console.log("Server listening in port:" + PORT);
+      log.info("Server listening in port:" + PORT);
     });
   };
 }

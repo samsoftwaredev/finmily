@@ -13,6 +13,7 @@ import { constants, GenderType, UserRoleType } from "../utils";
 import AddressModel from "./addressModel";
 import HouseholdModel from "./householdModel";
 import InvitationModel from "./invitationModel";
+import SuspiciousActivityModel from "./suspiciousActivityModel";
 import UserHouseholdModel from "./userHouseholdModel";
 import UserHouseholdVisibilityModel from "./userHouseholdVisibilityModel";
 
@@ -155,6 +156,12 @@ class UserModel extends BaseEntity {
 
   @OneToOne(() => InvitationModel, (invitation) => invitation.user_id_invited)
   user_id_invited: UserModel;
+
+  @OneToMany(() => SuspiciousActivityModel, (suspiciousActivity) => suspiciousActivity.reported_by)
+  reported_by: SuspiciousActivityModel[];
+
+  @OneToMany(() => SuspiciousActivityModel, (suspiciousActivity) => suspiciousActivity.user_id_reported)
+  user_id_reported: SuspiciousActivityModel[];
 
   // @Column()
   // @Generated("uuid")

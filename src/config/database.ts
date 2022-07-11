@@ -45,7 +45,7 @@ class Database {
         ],
         synchronize: true,
       });
-      log.debugger("Connected to Postgres");
+      log.info("Connected to Postgres");
     } catch (error) {
       log.error(error);
       throw new Error("Unable to connect Postgres");
