@@ -9,7 +9,7 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm";
-import { constants, GenderType, UserRoleType } from "../utils";
+import { validation, GenderType, UserRoleType } from "../utils";
 import AddressModel from "./addressModel";
 import HouseholdModel from "./householdModel";
 import InvitationModel from "./invitationModel";
@@ -26,7 +26,7 @@ class UserModel extends BaseEntity {
   @Column({
     type: "text",
     unique: true,
-    width: constants.MAX_EMAIL_LENGTH,
+    width: validation.MAX_EMAIL_LENGTH,
     nullable: false
   })
   email: string;
@@ -34,21 +34,21 @@ class UserModel extends BaseEntity {
   @Column({
     type: "text",
     nullable: false,
-    width: constants.MAX_USER_NAME_LENGTH,
+    width: validation.MAX_USER_NAME_LENGTH,
   })
   first_name: string;
 
   @Column({
     type: "text",
     nullable: false,
-    width: constants.MAX_USER_NAME_LENGTH,
+    width: validation.MAX_USER_NAME_LENGTH,
   })
   last_name: string;
 
   @Column({
     type: "text",
     nullable: true,
-    width: constants.MAX_USER_NAME_LENGTH,
+    width: validation.MAX_USER_NAME_LENGTH,
   })
   middle_name: string;
 

@@ -9,7 +9,7 @@ import {
   JoinColumn,
   OneToOne,
 } from "typeorm";
-import { constants, InvitedReasonType } from "../utils";
+import { validation, InvitedReasonType } from "../utils";
 import UserModel from "./userModel";
 
 
@@ -21,14 +21,14 @@ class InvitationModel extends BaseEntity {
   @Column({
     type: "text",
     nullable: false,
-    width: constants.MAX_USER_FULL_NAME_LENGTH,
+    width: validation.MAX_USER_FULL_NAME_LENGTH,
   })
   user_name_invited: string;
 
   @Column({
     type: "text",
     nullable: false,
-    width: constants.MAX_EMAIL_LENGTH,
+    width: validation.MAX_EMAIL_LENGTH,
   })
   user_email_invited: string;
 

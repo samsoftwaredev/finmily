@@ -8,7 +8,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm";
-import { constants } from "../utils";
+import { validation } from "../utils";
 import UserModel from "./userModel";
 
 @Entity("address")
@@ -19,42 +19,42 @@ class AddressModel extends BaseEntity {
   @Column({
     type: "text",
     nullable: false,
-    width: constants.MAX_STREET_ADDRESS_LENGTH,
+    width: validation.MAX_STREET_ADDRESS_LENGTH,
   })
   street_address_1: string;
 
   @Column({
     type: "text",
     nullable: true,
-    width: constants.MAX_STREET_ADDRESS_LENGTH,
+    width: validation.MAX_STREET_ADDRESS_LENGTH,
   })
   street_address_2: string;
 
   @Column({
     type: "text",
     nullable: false,
-    width: constants.MAX_CITY_LENGTH,
+    width: validation.MAX_CITY_LENGTH,
   })
   city: string;
 
   @Column({
     type: "text",
     nullable: false,
-    width: constants.MAX_STATE_LENGTH,
+    width: validation.MAX_STATE_LENGTH,
   })
   state: string;
 
   @Column({
     type: "text",
     nullable: false,
-    width: constants.MAX_POSTAL_CODE_LENGTH,
+    width: validation.MAX_POSTAL_CODE_LENGTH,
   })
   postal_code: string;
 
   @Column({
     type: "text",
     nullable: false,
-    width: constants.MAX_COUNTRY_LENGTH,
+    width: validation.MAX_COUNTRY_LENGTH,
   })
   country: string;
 
