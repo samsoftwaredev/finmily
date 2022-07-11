@@ -5,6 +5,7 @@ export class BaseError extends Error {
   public readonly httpCode: HttpStatusCode;
   // isOperational means that the server doesn't need to restart
   // therefore the error isTrustedError
+  public readonly description: string;
   public readonly isOperational: boolean = false;
 
   constructor(name: string, httpCode: HttpStatusCode, description: string, isOperational?: boolean) {
@@ -14,6 +15,7 @@ export class BaseError extends Error {
     this.name = name;
     this.httpCode = httpCode;
     this.isOperational = isOperational
+    this.description = description
 
     Error.captureStackTrace(this);
   }

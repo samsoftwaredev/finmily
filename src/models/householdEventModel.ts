@@ -31,16 +31,19 @@ class HouseholdEventModel extends BaseEntity {
   })
   description: string;
 
-  @UpdateDateColumn() // last time user permission were updated
+  @UpdateDateColumn()
   updated_at: Date;
 
-  @DeleteDateColumn() // last time user permission were updated
+  @DeleteDateColumn()
   created_at: Date;
 
-  @CreateDateColumn() // last time user permission were updated
+  @CreateDateColumn()
   deleted_at: Date;
 
-  @ManyToOne(() => HouseholdHistoryModel, (householdHistory) => householdHistory.householdEvent)
+  @ManyToOne(
+    () => HouseholdHistoryModel,
+    (householdHistory) => householdHistory.householdEvent
+  )
   @JoinColumn({ name: "household_history_id" })
   householdHistory: HouseholdHistoryModel;
 

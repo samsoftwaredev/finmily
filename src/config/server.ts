@@ -3,7 +3,7 @@ import cors from "cors";
 import Database from "./database";
 import { log } from "../utils";
 import { UsersController } from "../controllers";
-import { errorHandlerMiddleware } from "../middlewares";
+import { listenMiddleware } from "../middlewares";
 
 const PORT = 3030;
 // create and setup express app
@@ -39,7 +39,7 @@ class Server {
   middleware = async () => {
     this.app.use(express.json());
     this.app.use(cors());
-    this.app.use(errorHandlerMiddleware);
+    this.app.use(listenMiddleware);
   };
 
   start = async () => {
@@ -48,7 +48,7 @@ class Server {
     // start server
     const PORT = this.app.get("port");
     this.app.listen(PORT, () => {
-      log.info("Server listening in port: " + PORT);
+      log.info("Server listening at port: " + PORT);
     });
   };
 }

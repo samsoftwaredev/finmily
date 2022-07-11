@@ -1,11 +1,10 @@
-import { Router , Request, Response } from "express";
-import { HttpStatusCode, userProps } from "../utils";
+import { Router, Request, Response } from "express";
+import {  HttpStatusCode, userProps } from "../utils";
 import { UserService } from "../services";
-
 
 class UsersController {
   public router: Router;
-  private UserService: UserService
+  private UserService: UserService;
 
   constructor() {
     this.router = Router();
@@ -13,35 +12,45 @@ class UsersController {
     this.routes();
   }
 
-  public index = (req: Request, res: Response) => {
-    res.send(this.UserService.index());
+  public index = async (req: Request, res: Response) => {
+    const props = req.body;
+    this.UserService.index(props);
+  };
+
+  public queryOne = async (req: Request, res: Response) => {
+    const user_id: string = req.params.id;
+    try {
+      const user = await this.UserService.queryOne(user_id);
+      res.status(HttpStatusCode.OK).send(user);
+    } catch (error) {
+      res.status(error.httpCode).json(error);
+    }
   };
 
   public create = async (req: Request, res: Response) => {
     const props: userProps = req.body;
-    // try{
-      const newUser = await this.UserService.create(props)
+    try {
+      const newUser = await this.UserService.create(props);
       res.status(HttpStatusCode.OK).send(newUser);
-    // } catch (error) {
-    //   res.status(error.httpCode).json({
-    //     name: error.name,
-    //     message: error.message
-    //   })
-    // }
+    } catch (error) {
+      res.status(error.httpCode).json(error);
+    }
   };
 
-  public update = (req: Request, res: Response) => {
+  public update = async (req: Request, res: Response) => {
     res.send(this.UserService.update());
   };
-  public delete = (req: Request, res: Response) => {
+
+  public delete = async (req: Request, res: Response) => {
     res.send(this.UserService.delete());
   };
 
   public routes = () => {
-    this.router.get("/", this.index);
-    this.router.post("/", this.create);
+    this.router.get("/:id", this.queryOne);
+    this.router.post("/create-user", this.create);
     this.router.put("/:id", this.update);
     this.router.delete("/:id", this.delete);
+    this.router.get("/", this.index);
   };
 }
 
