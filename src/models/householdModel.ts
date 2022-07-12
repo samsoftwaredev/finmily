@@ -55,13 +55,6 @@ class HouseholdModel extends BaseEntity {
   }) // if the household was deactivated because of inactivity
   deactivated_at: Date;
 
-  @Column({
-    nullable: false,
-    type: "simple-array",
-  })
-  // an array that stores a list of users uuid that belong to the household
-  household_users: string[];
-
   @CreateDateColumn() // when the household was created
   created_at: Date;
 

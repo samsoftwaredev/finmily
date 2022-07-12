@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import { userNecessaryProps, HttpStatusCode, userWithIdProps, userProps, userListProps } from "../utils";
 import { UserService } from "../services";
 
-class UsersController {
+class UserController {
   public router: Router;
   private UserService: UserService;
 
@@ -71,4 +71,4 @@ class UsersController {
   };
 }
 
-export default UsersController;
+export default UserController;

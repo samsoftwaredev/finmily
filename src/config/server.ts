@@ -2,20 +2,22 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import Database from "./database";
 import { log } from "../utils";
-import { UsersController } from "../controllers";
+import { UserController, HouseholdController } from "../controllers";
 import { listenMiddleware } from "../middlewares";
 
 const PORT = 3030;
 // create and setup express app
 class Server {
   app = express.application;
-  usersController: UsersController;
+  userController: UserController;
+  householdController: HouseholdController;
   db: Database;
 
   constructor() {
     this.app = express();
     this.db = new Database();
-    this.usersController = new UsersController();
+    this.userController = new UserController();
+    this.householdController = new HouseholdController();
 
     this.configuration();
     this.middleware();
@@ -29,7 +31,8 @@ class Server {
 
   routes = () => {
     // register routes
-    this.app.use("/api/users/", this.usersController.router);
+    this.app.use("/api/users/", this.userController.router);
+    this.app.use("/api/household/", this.householdController.router);
     this.app.get("/", function (req: Request, res: Response) {
       // here we will have logic to return all users
       res.send(new Date().toString());

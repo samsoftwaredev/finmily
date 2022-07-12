@@ -1,4 +1,4 @@
-import { UserRoleType } from "./enum";
+import { UserRoleType } from "../enum";
 
 // used by create user endpoint 
 export interface userProps {

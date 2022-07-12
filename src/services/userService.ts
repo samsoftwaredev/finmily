@@ -60,6 +60,8 @@ class UserService {
     }
   };
 
+  // TODO: function to soft-delete a user
+
   public delete = async (userId: string): Promise<void> => {
     log.info("Removing user with id: " + userId);
     try {
