@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import {  HttpStatusCode, userProps } from "../utils";
+import { userNecessaryProps, HttpStatusCode, userWithIdProps, userProps, userListProps } from "../utils";
 import { UserService } from "../services";
 
 class UsersController {
@@ -12,15 +12,19 @@ class UsersController {
     this.routes();
   }
 
-  public index = async (req: Request, res: Response) => {
-    const props = req.body;
-    this.UserService.index(props);
+  public getAll = async (req: Request, res: Response) => {
+    try {
+      const users: userListProps = await this.UserService.getAll();
+      res.status(HttpStatusCode.OK).send(users);
+    } catch (error) {
+      res.status(error.httpCode).json(error);
+    }
   };
 
-  public queryOne = async (req: Request, res: Response) => {
-    const user_id: string = req.params.id;
+  public queryById = async (req: Request, res: Response) => {
+    const userId: string = req.params.id;
     try {
-      const user = await this.UserService.queryOne(user_id);
+      const user: userWithIdProps = await this.UserService.queryById(userId);
       res.status(HttpStatusCode.OK).send(user);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -28,9 +32,9 @@ class UsersController {
   };
 
   public create = async (req: Request, res: Response) => {
-    const props: userProps = req.body;
+    const userData: userNecessaryProps = req.body;
     try {
-      const newUser = await this.UserService.create(props);
+      const newUser: userWithIdProps = await this.UserService.create(userData);
       res.status(HttpStatusCode.OK).send(newUser);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -38,19 +42,32 @@ class UsersController {
   };
 
   public update = async (req: Request, res: Response) => {
-    res.send(this.UserService.update());
+    const userId: string = req.params.id;
+    const userData: userProps = req.body;
+    try {
+      const userUpdated: userWithIdProps = await  this.UserService.update(userData, userId) ;
+      res.status(HttpStatusCode.OK).send(userUpdated);
+    } catch (error) {
+      res.status(error.httpCode).json(error);
+    }
   };
 
   public delete = async (req: Request, res: Response) => {
-    res.send(this.UserService.delete());
+    const userId: string = req.params.id;
+    try {
+      await this.UserService.delete(userId) ;
+      res.status(HttpStatusCode.OK).send();
+    } catch (error) {
+      res.status(error.httpCode).json(error);
+    }
   };
 
   public routes = () => {
-    this.router.get("/:id", this.queryOne);
+    this.router.get("/:id", this.queryById);
     this.router.post("/create-user", this.create);
     this.router.put("/:id", this.update);
     this.router.delete("/:id", this.delete);
-    this.router.get("/", this.index);
+    this.router.get("/", this.getAll);
   };
 }
 

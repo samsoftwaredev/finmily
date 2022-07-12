@@ -1,9 +1,10 @@
 import { UserRoleType } from "./enum";
 
+// used by create user endpoint 
 export interface userProps {
-  email: string;
-  first_name: string;
-  last_name: string;
+  email?: string;
+  first_name?: string;
+  last_name?: string;
   middle_name?: string;
   gender?: string;
   dob?: string;
@@ -18,3 +19,18 @@ export interface userProps {
   is_2fa_enabled?: boolean;
   role?: UserRoleType;
 }
+
+// used by update user endpoint 
+export interface userWithIdProps extends userProps {
+  id: string,
+}
+
+export interface userNecessaryProps extends userProps {
+  email: string;
+  first_name: string;
+  last_name: string;
+}
+
+export interface userListProps extends userProps {
+  id: string,
+}[]
