@@ -1,23 +1,30 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from "typeorm";
-import { HouseholdHistoryType } from "../utils";
-import HouseholdEventModel from "./householdEventModel";
-import HouseholdModel from "./householdModel";
+import {
+  Entity,
+  BaseEntity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
+import { HouseholdHistoryType } from '../utils';
+import HouseholdEventModel from './householdEventModel';
+import HouseholdModel from './householdModel';
 
-
-@Entity("household_history")
+@Entity('household_history')
 class HouseholdHistoryModel extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: HouseholdHistoryType,
     nullable: false,
   })
   event_type: HouseholdHistoryType;
 
   @Column({
-    type: "boolean",
+    type: 'boolean',
     nullable: false,
     default: false,
   })
@@ -25,11 +32,14 @@ class HouseholdHistoryModel extends BaseEntity {
   // These events helps sys admins understand usability, but not users.
   is_hidden: boolean;
 
-  @OneToMany(()=> HouseholdEventModel, householdEvent => householdEvent.householdHistory)
-  householdEvent: HouseholdEventModel[]
+  @OneToMany(
+    () => HouseholdEventModel,
+    (householdEvent) => householdEvent.householdHistory,
+  )
+  householdEvent: HouseholdEventModel[];
 
   @OneToOne(() => HouseholdModel, (household) => household.householdHistory)
-  @JoinColumn({ name: "household_id" })
+  @JoinColumn({ name: 'household_id' })
   household: HouseholdModel;
 }
 

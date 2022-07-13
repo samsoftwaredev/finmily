@@ -1,4 +1,4 @@
-import { environmentsENV } from "./constants";
+import { environmentsENV } from './constants';
 
 const isDevEnvironment = () => environmentsENV.IS_DEV;
 const isProductionEnvironment = () => environmentsENV.IS_PRODUCTION;

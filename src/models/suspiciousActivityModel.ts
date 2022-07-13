@@ -8,37 +8,37 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
-} from "typeorm";
-import { SuspiciousType } from "../utils";
-import UserModel from "./userModel";
+} from 'typeorm';
+import { SuspiciousType } from '../utils';
+import UserModel from './userModel';
 
-@Entity("suspicious_activity")
+@Entity('suspicious_activity')
 class SuspiciousActivityModel extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: false,
   })
   //  description on why the user is a scammer
   reason: string;
 
   @Column({
-    type: "boolean",
+    type: 'boolean',
     nullable: true,
   })
   is_resolved: boolean;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: true,
   })
   // how was the problem resolved
   solution: string;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: SuspiciousType,
     nullable: false,
   })
@@ -54,11 +54,11 @@ class SuspiciousActivityModel extends BaseEntity {
   updated_at: Date;
 
   @ManyToOne(() => UserModel, (user) => user.reported_by)
-  @JoinColumn({ name: "reported_by" })
+  @JoinColumn({ name: 'reported_by' })
   reported_by: UserModel;
 
   @ManyToOne(() => UserModel, (user) => user.user_id_reported)
-  @JoinColumn({ name: "user_id_reported" })
+  @JoinColumn({ name: 'user_id_reported' })
   user_id_reported: UserModel;
 }
 

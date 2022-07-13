@@ -1,6 +1,6 @@
-import { UserRoleType } from "../enum";
+import { UserRoleType } from '../enum';
 
-// used by create user endpoint 
+// used by create user endpoint
 export interface userProps {
   email?: string;
   first_name?: string;
@@ -20,9 +20,9 @@ export interface userProps {
   role?: UserRoleType;
 }
 
-// used by update user endpoint 
+// used by update user endpoint
 export interface userWithIdProps extends userProps {
-  id: string,
+  id: string;
 }
 
 export interface userNecessaryProps extends userProps {
@@ -32,5 +32,6 @@ export interface userNecessaryProps extends userProps {
 }
 
 export interface userListProps extends userProps {
-  id: string,
-}[]
+  id: string;
+}
+[];

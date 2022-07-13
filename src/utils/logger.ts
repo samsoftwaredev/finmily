@@ -1,5 +1,5 @@
-import winston from "winston";
-import { isDevEnvironment } from "./systemInfo";
+import winston from 'winston';
+import { isDevEnvironment } from './systemInfo';
 
 const customLevels = {
   levels: {
@@ -18,24 +18,24 @@ const customLevels = {
     error: 'red',
     fatal: 'red',
   },
- };
-  
- const formatter = winston.format.combine(
+};
+
+const formatter = winston.format.combine(
   winston.format.colorize(),
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
   winston.format.splat(),
   winston.format.printf((info) => {
     const { timestamp, level, message, ...meta } = info;
-  
+
     return `${timestamp} [${level}]: ${message} ${
       Object.keys(meta).length ? JSON.stringify(meta, null, 2) : ''
     }`;
   }),
- );
-  
- class Logger {
+);
+
+class Logger {
   private logger: winston.Logger;
-  
+
   constructor() {
     const prodTransport = new winston.transports.File({
       filename: 'logs/error.log',
@@ -51,31 +51,31 @@ const customLevels = {
     });
     winston.addColors(customLevels.colors);
   }
-  
+
   trace(msg: any, meta?: any) {
     this.logger.log('trace', msg, meta);
   }
-  
+
   debug(msg: any, meta?: any) {
     this.logger.debug(msg, meta);
   }
-  
+
   info(msg: any, meta?: any) {
     this.logger.info(msg, meta);
   }
-  
+
   warn(msg: any, meta?: any) {
     this.logger.warn(msg, meta);
   }
-  
+
   error(msg: any, meta?: any) {
     this.logger.error(msg, meta);
   }
-  
+
   fatal(msg: any, meta?: any) {
     this.logger.log('fatal', msg, meta);
   }
- }
-  
+}
+
 const log = new Logger();
 export default log;

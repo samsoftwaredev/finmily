@@ -1,6 +1,12 @@
-import { Router, Request, Response } from "express";
-import { userNecessaryProps, HttpStatusCode, userWithIdProps, userProps, userListProps } from "../utils";
-import { UserService } from "../services";
+import { Router, Request, Response } from 'express';
+import {
+  userNecessaryProps,
+  HttpStatusCode,
+  userWithIdProps,
+  userProps,
+  userListProps,
+} from '../utils';
+import { UserService } from '../services';
 
 class UserController {
   public router: Router;
@@ -45,7 +51,10 @@ class UserController {
     const userId: string = req.params.id;
     const userData: userProps = req.body;
     try {
-      const userUpdated: userWithIdProps = await  this.UserService.update(userData, userId) ;
+      const userUpdated: userWithIdProps = await this.UserService.update(
+        userData,
+        userId,
+      );
       res.status(HttpStatusCode.OK).send(userUpdated);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -55,7 +64,7 @@ class UserController {
   public delete = async (req: Request, res: Response) => {
     const userId: string = req.params.id;
     try {
-      await this.UserService.delete(userId) ;
+      await this.UserService.delete(userId);
       res.status(HttpStatusCode.OK).send();
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -63,11 +72,11 @@ class UserController {
   };
 
   public routes = () => {
-    this.router.get("/:id", this.queryById);
-    this.router.post("/create-user", this.create);
-    this.router.put("/:id", this.update);
-    this.router.delete("/:id", this.delete);
-    this.router.get("/", this.getAll);
+    this.router.get('/:id', this.queryById);
+    this.router.post('/create-user', this.create);
+    this.router.put('/:id', this.update);
+    this.router.delete('/:id', this.delete);
+    this.router.get('/', this.getAll);
   };
 }
 

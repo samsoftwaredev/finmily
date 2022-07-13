@@ -1,2 +1,2 @@
-export * from "./userInterfaces";
-export * from "./householdInterfaces";
+export * from './userInterfaces';
+export * from './householdInterfaces';

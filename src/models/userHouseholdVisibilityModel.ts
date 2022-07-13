@@ -6,35 +6,35 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
-} from "typeorm";
-import HouseholdModel from "./householdModel";
-import UserModel from "./userModel";
+} from 'typeorm';
+import HouseholdModel from './householdModel';
+import UserModel from './userModel';
 
-@Entity("user_household_visibility")
+@Entity('user_household_visibility')
 class UserHouseholdVisibilityModel extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    type: "boolean",
+    type: 'boolean',
     nullable: true,
   })
   show_transactions: boolean;
 
   @Column({
-    type: "boolean",
+    type: 'boolean',
     nullable: false,
   })
   show_bank_balance: boolean;
 
   @Column({
-    type: "boolean",
+    type: 'boolean',
     nullable: false,
   })
   show_monthly_expenses: boolean;
 
   @Column({
-    type: "boolean",
+    type: 'boolean',
     nullable: false,
   })
   show_monthly_revenue: boolean;
@@ -43,11 +43,14 @@ class UserHouseholdVisibilityModel extends BaseEntity {
   updated_at: Date;
 
   @ManyToOne(() => UserModel, (user) => user.userHouseholdVisibility)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: 'user_id' })
   user: UserModel;
 
-  @ManyToOne(() => HouseholdModel, (household) => household.userHouseholdVisibility)
-  @JoinColumn({ name: "household_id" })
+  @ManyToOne(
+    () => HouseholdModel,
+    (household) => household.userHouseholdVisibility,
+  )
+  @JoinColumn({ name: 'household_id' })
   household: HouseholdModel;
 }
 

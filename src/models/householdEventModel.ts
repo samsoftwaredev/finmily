@@ -8,25 +8,25 @@ import {
   DeleteDateColumn,
   ManyToOne,
   JoinColumn,
-} from "typeorm";
-import { HouseholdEventType } from "../utils";
-import HouseholdHistoryModel from "./householdHistoryModel";
-import HouseholdModel from "./householdModel";
+} from 'typeorm';
+import { HouseholdEventType } from '../utils';
+import HouseholdHistoryModel from './householdHistoryModel';
+import HouseholdModel from './householdModel';
 
-@Entity("household_event")
+@Entity('household_event')
 class HouseholdEventModel extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: HouseholdEventType,
     nullable: false,
   })
   event_type: HouseholdEventType;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: true,
   })
   description: string;
@@ -42,13 +42,13 @@ class HouseholdEventModel extends BaseEntity {
 
   @ManyToOne(
     () => HouseholdHistoryModel,
-    (householdHistory) => householdHistory.householdEvent
+    (householdHistory) => householdHistory.householdEvent,
   )
-  @JoinColumn({ name: "household_history_id" })
+  @JoinColumn({ name: 'household_history_id' })
   householdHistory: HouseholdHistoryModel;
 
   @ManyToOne(() => HouseholdModel, (household) => household.householdEvent)
-  @JoinColumn({ name: "household_id" })
+  @JoinColumn({ name: 'household_id' })
   household: HouseholdModel;
 }
 

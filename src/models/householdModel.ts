@@ -10,47 +10,47 @@ import {
   ManyToOne,
   JoinColumn,
   OneToOne,
-} from "typeorm";
-import HouseholdEventModel from "./householdEventModel";
-import HouseholdHistoryModel from "./householdHistoryModel";
-import UserHouseholdModel from "./userHouseholdModel";
-import UserHouseholdVisibilityModel from "./userHouseholdVisibilityModel";
-import UserModel from "./userModel";
+} from 'typeorm';
+import HouseholdEventModel from './householdEventModel';
+import HouseholdHistoryModel from './householdHistoryModel';
+import UserHouseholdModel from './userHouseholdModel';
+import UserHouseholdVisibilityModel from './userHouseholdVisibilityModel';
+import UserModel from './userModel';
 
-@Entity("household")
+@Entity('household')
 class HouseholdModel extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: false,
     width: 64,
   })
   name: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: true,
     width: 250,
   })
   description: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: true,
     width: 500,
   })
   picture: string;
 
   @Column({
-    type: "date",
+    type: 'date',
     nullable: true,
   }) // if the household was blocked for suspicious activity
   blocked_at: Date;
 
   @Column({
-    type: "date",
+    type: 'date',
     nullable: true,
   }) // if the household was deactivated because of inactivity
   deactivated_at: Date;
@@ -65,31 +65,33 @@ class HouseholdModel extends BaseEntity {
   updated_at: Date;
 
   @ManyToOne(() => UserModel, (user) => user.household)
-  @JoinColumn({ name: "created_by" })
+  // TODO: this must be a require field
+  @JoinColumn({ name: 'created_by' })
   user: UserModel;
 
   @OneToMany(
     () => UserHouseholdModel,
-    (userHousehold) => userHousehold.household
+    (userHousehold) => userHousehold.household,
   )
   userHousehold: UserHouseholdModel[];
 
   @OneToMany(
     () => UserHouseholdVisibilityModel,
-    (userHouseholdVisibility) => userHouseholdVisibility.household
+    (userHouseholdVisibility) => userHouseholdVisibility.household,
   )
   userHouseholdVisibility: UserHouseholdVisibilityModel[];
 
   @OneToMany(
     () => HouseholdEventModel,
-    (householdEvent) => householdEvent.household
+    (householdEvent) => householdEvent.household,
   )
   householdEvent: HouseholdEventModel[];
 
   @OneToOne(
     () => HouseholdHistoryModel,
-    (householdHistory) => householdHistory.household
+    (householdHistory) => householdHistory.household,
   )
+  @JoinColumn({ name: 'history_id' })
   householdHistory: HouseholdHistoryModel;
 }
 

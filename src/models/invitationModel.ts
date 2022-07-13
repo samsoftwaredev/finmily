@@ -8,25 +8,24 @@ import {
   ManyToOne,
   JoinColumn,
   OneToOne,
-} from "typeorm";
-import { validation, InvitedReasonType } from "../utils";
-import UserModel from "./userModel";
+} from 'typeorm';
+import { validation, InvitedReasonType } from '../utils';
+import UserModel from './userModel';
 
-
-@Entity("invitation")
+@Entity('invitation')
 class InvitationModel extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: false,
     width: validation.MAX_USER_FULL_NAME_LENGTH,
   })
   user_name_invited: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: false,
     width: validation.MAX_EMAIL_LENGTH,
   })
@@ -39,34 +38,34 @@ class InvitationModel extends BaseEntity {
   updated_at: Date;
 
   @Column({
-    type: "date",
+    type: 'date',
     nullable: true,
   }) // if the invitation was blocked for suspicious activity
   blocked_at: Date;
 
   @Column({
-    type: "date",
+    type: 'date',
     nullable: true,
   }) // if the household was expired because of inactivity
   expired_at: Date;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: InvitedReasonType,
     default: InvitedReasonType.HOUSEHOLD,
     nullable: false,
   })
   invited_to: InvitedReasonType;
 
-  @Column({ type: "simple-json", nullable: true })
+  @Column({ type: 'simple-json', nullable: true })
   data: { household_id?: string };
 
   @ManyToOne(() => UserModel, (user) => user.invited_by)
-  @JoinColumn({ name: "invited_by_id" })
+  @JoinColumn({ name: 'invited_by_id' })
   invited_by: UserModel;
 
   @OneToOne(() => UserModel, (user) => user.user_id_invited)
-  @JoinColumn({ name: "user_id_invited" })
+  @JoinColumn({ name: 'user_id_invited' })
   user_id_invited: UserModel;
 }
 

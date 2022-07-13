@@ -8,59 +8,58 @@ import {
   DeleteDateColumn,
   OneToMany,
   OneToOne,
-} from "typeorm";
-import { validation, GenderType, UserRoleType } from "../utils";
-import AddressModel from "./addressModel";
-import HouseholdModel from "./householdModel";
-import InvitationModel from "./invitationModel";
-import SuspiciousActivityModel from "./suspiciousActivityModel";
-import UserHouseholdModel from "./userHouseholdModel";
-import UserHouseholdVisibilityModel from "./userHouseholdVisibilityModel";
+} from 'typeorm';
+import { validation, GenderType, UserRoleType } from '../utils';
+import AddressModel from './addressModel';
+import HouseholdModel from './householdModel';
+import InvitationModel from './invitationModel';
+import SuspiciousActivityModel from './suspiciousActivityModel';
+import UserHouseholdModel from './userHouseholdModel';
+import UserHouseholdVisibilityModel from './userHouseholdVisibilityModel';
 
-
-@Entity("user")
+@Entity('user')
 class UserModel extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     unique: true,
     width: validation.MAX_EMAIL_LENGTH,
-    nullable: false
+    nullable: false,
   })
   email: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: false,
     width: validation.MAX_USER_NAME_LENGTH,
   })
   first_name: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: false,
     width: validation.MAX_USER_NAME_LENGTH,
   })
   last_name: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: true,
     width: validation.MAX_USER_NAME_LENGTH,
   })
   middle_name: string;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: GenderType,
     nullable: true,
   })
   gender: GenderType;
 
   @Column({
-    type: "date",
+    type: 'date',
     nullable: true,
   })
   dob: Date;
@@ -75,62 +74,62 @@ class UserModel extends BaseEntity {
   updated_at: Date;
 
   @Column({
-    type: "date",
+    type: 'date',
     nullable: true,
   }) // if the user was blocked for suspicious activity
   blocked_at: Date;
 
   @Column({
-    type: "date",
+    type: 'date',
     nullable: true,
   }) // if the user was deactivated because of inactivity
   deactivated_at: Date;
 
   @Column({
-    type: "date",
+    type: 'date',
     nullable: false,
     default: new Date().toISOString(),
   })
   last_login: Date;
 
   @Column({
-    type: "boolean",
+    type: 'boolean',
     default: false,
   })
   is_online: boolean;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: true,
   })
   phone_number: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: true,
   })
   country_code: string;
 
   @Column({
-    type: "boolean",
+    type: 'boolean',
     default: false,
   })
   is_email_verified: boolean;
 
   @Column({
-    type: "boolean",
+    type: 'boolean',
     default: false,
   })
   is_phone_verified: boolean;
 
   @Column({
-    type: "boolean",
+    type: 'boolean',
     default: false,
   })
   is_2fa_enabled: boolean;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: UserRoleType,
     default: UserRoleType.USER,
   })
@@ -141,7 +140,7 @@ class UserModel extends BaseEntity {
 
   @OneToMany(
     () => UserHouseholdVisibilityModel,
-    (userHouseholdVisibility) => userHouseholdVisibility.user
+    (userHouseholdVisibility) => userHouseholdVisibility.user,
   )
   userHouseholdVisibility: UserHouseholdVisibilityModel[];
 
@@ -157,10 +156,16 @@ class UserModel extends BaseEntity {
   @OneToOne(() => InvitationModel, (invitation) => invitation.user_id_invited)
   user_id_invited: UserModel;
 
-  @OneToMany(() => SuspiciousActivityModel, (suspiciousActivity) => suspiciousActivity.reported_by)
+  @OneToMany(
+    () => SuspiciousActivityModel,
+    (suspiciousActivity) => suspiciousActivity.reported_by,
+  )
   reported_by: SuspiciousActivityModel[];
 
-  @OneToMany(() => SuspiciousActivityModel, (suspiciousActivity) => suspiciousActivity.user_id_reported)
+  @OneToMany(
+    () => SuspiciousActivityModel,
+    (suspiciousActivity) => suspiciousActivity.user_id_reported,
+  )
   user_id_reported: SuspiciousActivityModel[];
 
   // @Column()

@@ -7,52 +7,52 @@ import {
   DeleteDateColumn,
   ManyToOne,
   JoinColumn,
-} from "typeorm";
-import { validation } from "../utils";
-import UserModel from "./userModel";
+} from 'typeorm';
+import { validation } from '../utils';
+import UserModel from './userModel';
 
-@Entity("address")
+@Entity('address')
 class AddressModel extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: false,
     width: validation.MAX_STREET_ADDRESS_LENGTH,
   })
   street_address_1: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: true,
     width: validation.MAX_STREET_ADDRESS_LENGTH,
   })
   street_address_2: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: false,
     width: validation.MAX_CITY_LENGTH,
   })
   city: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: false,
     width: validation.MAX_STATE_LENGTH,
   })
   state: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: false,
     width: validation.MAX_POSTAL_CODE_LENGTH,
   })
   postal_code: string;
 
   @Column({
-    type: "text",
+    type: 'text',
     nullable: false,
     width: validation.MAX_COUNTRY_LENGTH,
   })
@@ -65,7 +65,7 @@ class AddressModel extends BaseEntity {
   deleted_at: Date;
 
   @ManyToOne(() => UserModel, (user) => user.address)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: 'user_id' })
   user: UserModel;
 }
 
