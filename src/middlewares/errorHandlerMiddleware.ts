@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
-import { BaseError, HTTP500Error, HttpStatusCode, log } from '../utils';
+import { BaseError, FatalError, log } from '../utils';
 
 // how to implement error handling middleware
 // http://expressjs.com/en/guide/error-handling.html
@@ -35,7 +35,7 @@ const errorHandlerMiddleware = async (
   }
   await errorHandler.handleError(err);
 
-  const internalError = new HTTP500Error();
+  const internalError = new FatalError();
   res.status(internalError.httpCode).json(internalError);
 };
 

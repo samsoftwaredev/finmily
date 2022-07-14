@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response } from 'express';
 import {
   userRequiredProps,
   HttpStatusCode,
@@ -37,7 +37,7 @@ class UserController {
     }
   };
 
-  public create = async (req: Request, res: Response, next: NextFunction) => {
+  public create = async (req: Request, res: Response) => {
     const userData: userRequiredProps = req.body;
     try {
       const newUser: userWithIdProps = await this.UserService.create(userData);

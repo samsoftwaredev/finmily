@@ -23,8 +23,9 @@ class Server {
     this.householdController = new HouseholdController();
 
     this.configuration();
-    this.middleware();
+    this.preMiddleware();
     this.routes();
+    this.postMiddleware();
   }
 
   configuration = () => {
@@ -37,17 +38,19 @@ class Server {
     this.app.use('/api/users/', this.userController.router);
     this.app.use('/api/household/', this.householdController.router);
     this.app.get('/', function (req: Request, res: Response) {
-      // here we will have logic to return all users
       res.send(new Date().toString());
     });
-    // NOTE: errorHandlerMiddleware live be after the routes
-    this.app.use(errorHandlerMiddleware);
   };
 
-  middleware = () => {
+  preMiddleware = () => {
     this.app.use(express.json());
     this.app.use(cors());
     this.app.use(requestListenerMiddleware);
+  };
+
+  postMiddleware = () => {
+    // NOTE: errorHandlerMiddleware be after the routes
+    this.app.use(errorHandlerMiddleware);
   };
 
   start = async () => {
