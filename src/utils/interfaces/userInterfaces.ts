@@ -25,7 +25,7 @@ export interface userWithIdProps extends userProps {
   id: string;
 }
 
-export interface userNecessaryProps extends userProps {
+export interface userRequiredProps extends userProps {
   email: string;
   first_name: string;
   last_name: string;

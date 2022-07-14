@@ -4,7 +4,7 @@ import {
   HTTP500Error,
   log,
   householdWithIdProps,
-  householdNecessaryProps,
+  householdRequiredProps,
   householdProps,
   householdListProps,
 } from '../utils';
@@ -44,7 +44,7 @@ class HouseholdService {
   };
 
   public create = async (
-    householdData: householdNecessaryProps,
+    householdData: householdRequiredProps,
   ): Promise<householdWithIdProps> => {
     log.info('Creating household in database');
     try {
@@ -83,7 +83,7 @@ class HouseholdService {
     }
   };
 
-  // TODO: function to soft-delete a user
+  // TODO: function to soft-delete a household
 
   public delete = async (householdId: string): Promise<void> => {
     log.info('Removing household with id: ' + householdId);

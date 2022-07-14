@@ -4,7 +4,7 @@ import {
   HTTP500Error,
   log,
   userWithIdProps,
-  userNecessaryProps,
+  userRequiredProps,
   userProps,
   userListProps,
 } from '../utils';
@@ -44,7 +44,7 @@ class UserService {
   };
 
   public create = async (
-    userData: userNecessaryProps,
+    userData: userRequiredProps,
   ): Promise<userWithIdProps> => {
     log.info('Creating user in database');
     try {

@@ -16,7 +16,7 @@ export interface householdWithIdProps extends householdProps {
   id: string;
 }
 
-export interface householdNecessaryProps extends householdProps {
+export interface householdRequiredProps extends householdProps {
   name: string;
   created_by: string;
 }

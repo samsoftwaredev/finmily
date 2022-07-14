@@ -3,15 +3,18 @@ import cors from 'cors';
 import Database from './database';
 import { log } from '../utils';
 import { UserController, HouseholdController } from '../controllers';
-import { listenMiddleware } from '../middlewares';
+import {
+  errorHandlerMiddleware,
+  requestListenerMiddleware,
+} from '../middlewares';
 
 const PORT = 3030;
 // create and setup express app
 class Server {
-  app = express.application;
-  userController: UserController;
-  householdController: HouseholdController;
-  db: Database;
+  private app = express.application;
+  private userController: UserController;
+  private householdController: HouseholdController;
+  private db: Database;
 
   constructor() {
     this.app = express();
@@ -37,12 +40,14 @@ class Server {
       // here we will have logic to return all users
       res.send(new Date().toString());
     });
+    // NOTE: errorHandlerMiddleware live be after the routes
+    this.app.use(errorHandlerMiddleware);
   };
 
-  middleware = async () => {
+  middleware = () => {
     this.app.use(express.json());
     this.app.use(cors());
-    this.app.use(listenMiddleware);
+    this.app.use(requestListenerMiddleware);
   };
 
   start = async () => {

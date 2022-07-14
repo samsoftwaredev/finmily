@@ -1,13 +1,13 @@
 import { NextFunction, Response, Request } from 'express';
-import { BaseError, HttpStatusCode, log } from '../utils';
+import { BaseError, HTTP500Error, HttpStatusCode, log } from '../utils';
 
 // how to implement error handling middleware
 // http://expressjs.com/en/guide/error-handling.html
 // source of reference: https://www.toptal.com/nodejs/node-js-error-handling
 class ErrorHandler {
   public async handleError(err: Error): Promise<void> {
-    await log.error(
-      'Error message from the centralized error-handling component',
+    await log.fatal(
+      'FATAL: Error message from the centralized error-handling component',
       err,
     );
     // TODO: implement notifications for errors
@@ -24,21 +24,19 @@ class ErrorHandler {
 }
 
 const errorHandlerMiddleware = async (
-  err: Error,
+  err: BaseError,
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   const errorHandler = new ErrorHandler();
-  log.info('called');
-  if (!errorHandler.isTrustedError(err)) {
-    next(err);
+  if (errorHandler.isTrustedError(err)) {
+    return next(err);
   }
   await errorHandler.handleError(err);
-  res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
-    name: 'UNKNOWN ERROR',
-    message: 'Something went wrong.',
-  });
+
+  const internalError = new HTTP500Error();
+  res.status(internalError.httpCode).json(internalError);
 };
 
 export default errorHandlerMiddleware;

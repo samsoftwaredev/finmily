@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import {
-  householdNecessaryProps,
+  householdRequiredProps,
   HttpStatusCode,
   householdWithIdProps,
   householdProps,
@@ -40,7 +40,7 @@ class HouseholdController {
   };
 
   public create = async (req: Request, res: Response) => {
-    const householdData: householdNecessaryProps = req.body;
+    const householdData: householdRequiredProps = req.body;
     try {
       const newHousehold: householdWithIdProps =
         await this.HouseholdService.create(householdData);
