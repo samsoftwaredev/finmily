@@ -1,18 +1,24 @@
 import { NextFunction, Response, Request } from 'express';
-import { BaseError, FatalError, log } from '../utils';
+import { APIError, BaseError, FatalError, log } from '../utils';
 
 // how to implement error handling middleware
 // http://expressjs.com/en/guide/error-handling.html
 // source of reference: https://www.toptal.com/nodejs/node-js-error-handling
 class ErrorHandler {
-  public async handleError(err: Error): Promise<void> {
-    await log.fatal(
-      'FATAL: Error message from the centralized error-handling component',
-      err,
-    );
-    // TODO: implement notifications for errors
-    // await sendMailToAdminIfCritical();
-    // await sendEventsToSentry();
+  public async handleError(err: Error): Promise<BaseError> {
+    if (err instanceof SyntaxError) {
+      log.error('Syntax Error', err);
+      return new APIError('Syntax Error', 'This might be a simple typo');
+    } else {
+      await log.fatal(
+        'FATAL: Error message from the centralized error-handling',
+        err,
+      );
+      // TODO: implement notifications for errors
+      // await sendMailToAdminIfCritical();
+      // await sendEventsToSentry();
+      return new FatalError();
+    }
   }
 
   public isTrustedError(error: Error) {
@@ -33,9 +39,8 @@ const errorHandlerMiddleware = async (
   if (errorHandler.isTrustedError(err)) {
     return next(err);
   }
-  await errorHandler.handleError(err);
 
-  const internalError = new FatalError();
+  const internalError: BaseError = await errorHandler.handleError(err);
   res.status(internalError.httpCode).json(internalError);
 };
 

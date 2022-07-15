@@ -7,6 +7,8 @@ import {
   householdListProps,
 } from '../utils';
 import { HouseholdService } from '../services';
+import { validateBody } from '../middlewares';
+import _schema from '../_schema';
 
 class HouseholdController {
   public router: Router;
@@ -74,8 +76,12 @@ class HouseholdController {
 
   public routes = () => {
     this.router.get('/:id', this.queryById);
-    this.router.post('/create-household', this.create);
-    this.router.put('/:id', this.update);
+    this.router.post(
+      '/create-household',
+      validateBody(_schema.householdRequiredProps),
+      this.create,
+    );
+    this.router.put('/:id', validateBody(_schema.householdProps), this.update);
     this.router.delete('/:id', this.delete);
     this.router.get('/', this.getAll);
   };

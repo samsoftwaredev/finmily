@@ -4,11 +4,11 @@ export interface householdProps {
   created_by?: string;
   description?: string;
   picture?: string;
-  blocked_at?: Date;
-  deactivated_at?: Date;
-  created_at?: Date;
-  deleted_at?: Date;
-  updated_at?: Date;
+  blocked_at?: string;
+  deactivated_at?: string;
+  created_at?: string;
+  deleted_at?: string;
+  updated_at?: string;
 }
 
 // used by update household endpoint

@@ -10,8 +10,8 @@ export class BaseError extends Error {
 
   constructor(
     name: string,
-    httpCode: HttpStatusCode,
     description: string,
+    httpCode: HttpStatusCode,
     isOperational?: boolean,
   ) {
     super(description);
@@ -30,34 +30,34 @@ export class BaseError extends Error {
 export class APIError extends BaseError {
   constructor(
     name,
-    httpCode = HttpStatusCode.INTERNAL_SERVER_ERROR,
     description = 'Internal server error',
+    httpCode = HttpStatusCode.INTERNAL_SERVER_ERROR,
     isOperational = true,
   ) {
-    super(name, httpCode, description, isOperational);
+    super(name, description, httpCode, isOperational);
   }
 }
 
 export class HTTP404Error extends BaseError {
   constructor(description = "We couldn't find what you were looking for") {
-    super('NOT FOUND', HttpStatusCode.NOT_FOUND, description, true);
+    super('NOT FOUND', description, HttpStatusCode.NOT_FOUND, true);
   }
 }
 
 export class HTTP400Error extends BaseError {
   constructor(description = 'Bad request') {
-    super('NOT VALID', HttpStatusCode.BAD_REQUEST, description, true);
+    super('NOT VALID', description, HttpStatusCode.BAD_REQUEST, true);
   }
 }
 
 export class HTTP500Error extends BaseError {
   constructor(description = 'Internal server error') {
-    super('ERROR', HttpStatusCode.INTERNAL_SERVER_ERROR, description, true);
+    super('ERROR', description, HttpStatusCode.INTERNAL_SERVER_ERROR, true);
   }
 }
 
 export class FatalError extends BaseError {
   constructor(description = 'Something went wrong') {
-    super('FATAL', HttpStatusCode.INTERNAL_SERVER_ERROR, description, false);
+    super('FATAL', description, HttpStatusCode.INTERNAL_SERVER_ERROR, false);
   }
 }

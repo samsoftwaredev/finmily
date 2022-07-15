@@ -79,7 +79,7 @@ class UserController {
       validateBody(_schema.userRequiredProps),
       this.create,
     );
-    this.router.put('/:id', this.update);
+    this.router.put('/:id', validateBody(_schema.userProps), this.update);
     this.router.delete('/:id', this.delete);
     this.router.get('/', this.getAll);
   };

@@ -7,6 +7,7 @@ import {
   userRequiredProps,
   userProps,
   userListProps,
+  HTTP404Error,
 } from '../utils';
 
 class UserService {
@@ -17,6 +18,7 @@ class UserService {
     try {
       const allUsers = await Database.getManager().find(UserModel);
       log.info('Got all users');
+      if (allUsers.length === 0) throw new HTTP404Error('No users found');
       return allUsers;
     } catch (error) {
       log.error(error);
@@ -39,7 +41,7 @@ class UserService {
       return user;
     } catch (error) {
       log.error(error);
-      throw new HTTP500Error('Unable to find user in database');
+      throw new HTTP404Error('Unable to find user in database');
     }
   };
 

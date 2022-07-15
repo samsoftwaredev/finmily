@@ -3,9 +3,10 @@ import path from 'path';
 import * as TJS from 'typescript-json-schema';
 import fs from 'fs';
 
-// NOTE: this file is one execute once.
-// if changes are done to the typescript types,
-// you will need to re-run the application
+// NOTE: This file is execute only once.
+// if changes are done to the typescript types/interfaces,
+// you will need to re-run the application in order to this
+// to create a new file with the most up-to-date body request validator
 
 console.log('Generating schemas for validation request body');
 

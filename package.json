@@ -31,7 +31,7 @@
     "schema": "ts-node ./schemaGenerator.ts",
     "start": "npm run compile && npm run schema && node .",
     "dev": "npm run schema && nodemon --watch './**/*.ts' --exec 'ts-node' src/app.ts",
-    "test": "jest"
+    "test": "jest --watch"
   },
   "author": "Samuel Ruiz",
   "license": "ISC"
