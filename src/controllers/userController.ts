@@ -7,7 +7,8 @@ import {
   userListProps,
 } from '../utils';
 import { UserService } from '../services';
-
+import { validateBody } from '../middlewares';
+import _schema from '../_schema';
 class UserController {
   public router: Router;
   private UserService: UserService;
@@ -73,7 +74,11 @@ class UserController {
 
   public routes = () => {
     this.router.get('/:id', this.queryById);
-    this.router.post('/create-user', this.create);
+    this.router.post(
+      '/create-user',
+      validateBody(_schema.userRequiredProps),
+      this.create,
+    );
     this.router.put('/:id', this.update);
     this.router.delete('/:id', this.delete);
     this.router.get('/', this.getAll);

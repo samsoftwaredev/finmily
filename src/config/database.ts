@@ -13,6 +13,8 @@ import {
 } from '../models';
 
 class Database {
+  // appDataSource has to be a static value in order for the
+  // "./services" methods to manipulate the DB
   private static appDataSource = null;
 
   constructor() {}

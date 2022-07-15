@@ -57,7 +57,7 @@ export class HTTP500Error extends BaseError {
 }
 
 export class FatalError extends BaseError {
-  constructor(description = 'Something when wrong') {
+  constructor(description = 'Something went wrong') {
     super('FATAL', HttpStatusCode.INTERNAL_SERVER_ERROR, description, false);
   }
 }

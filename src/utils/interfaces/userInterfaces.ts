@@ -8,9 +8,9 @@ export interface userProps {
   middle_name?: string;
   gender?: string;
   dob?: string;
-  blocked_at?: Date;
-  deactivated_at?: Date;
-  last_login?: Date;
+  blocked_at?: string;
+  deactivated_at?: string;
+  last_login?: string;
   is_online?: boolean;
   phone_number?: string;
   country_code?: string;
