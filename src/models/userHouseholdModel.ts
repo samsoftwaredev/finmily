@@ -6,12 +6,13 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
 } from 'typeorm';
+import { userHouseholdProps } from '../utils/interfaces/userHouseholdInterfaces';
 import { ColorScheme } from '../utils';
 import HouseholdModel from './householdModel';
 import UserModel from './userModel';
 
 @Entity('user_household')
-class UserHouseholdModel extends BaseEntity {
+class UserHouseholdModel extends BaseEntity implements userHouseholdProps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -36,7 +37,8 @@ class UserHouseholdModel extends BaseEntity {
 
   @ManyToOne(() => UserModel, (user) => user.userHousehold)
   @JoinColumn({ name: 'user_id' })
-  user: UserModel;
+  user: UserModel; // this is what is cause the problem with the "$ref": "#/definitions/default_2"
+  // basically the library doesn't know how to resolve ManyToMay, OneToMany and One to One relationship
 
   @ManyToOne(() => HouseholdModel, (household) => household.userHousehold)
   @JoinColumn({ name: 'household_id' })

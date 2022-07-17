@@ -11,24 +11,37 @@ import fs from 'fs';
 console.log('Generating schemas for validation request body');
 
 const settings = {
-  required: true,
+  required: true, // Make fields required. Must be always true
   ref: false,
+  aliasRef: false,
+  topRef: false,
+  titles: true,
+  noExtraProps: true,
+  typeOfKeyword: true,
+  strictNullChecks: true,
+  esModuleInterop: true,
+  ignoreErrors: true,
+  excludePrivate: true,
+  tsNodeRegister: true,
+  id: '123asdf',
+  rejectDateType: false,
+  uniqueNames: false,
 };
 
 const interfacesFile = path.resolve('./src/utils/interfaces/index.ts');
 const compilerOptionsFile = path.resolve('./tsconfig.json');
+const basePath = './src';
 
 const program = TJS.getProgramFromFiles(
   [interfacesFile],
   compilerOptionsFile,
-  './src',
+  basePath,
 );
 
 const schema = TJS.generateSchema(program, '*', settings);
 
 fs.writeFileSync(
   './src/_schema.ts',
-  'const schema = ' +
-    JSON.stringify(schema) +
-    ' as const;\nexport default schema.definitions;',
+  `const schema = ${JSON.stringify(schema)};
+    export default schema.definitions;`,
 );

@@ -1,5 +1,5 @@
 const variablesENV = {
-  PORT: +process.env.PORT,
+  PORT: process.env.PORT ? +process.env.PORT : 3000,
   PRODUCTION: 'production',
   DEVELOPMENT: 'development',
   TESTING: 'testing',
@@ -13,7 +13,7 @@ const environmentsENV = {
 
 const databaseENV = {
   DB_HOST: process.env.DB_HOST,
-  DB_PORT: +process.env.DB_PORT,
+  DB_PORT: process.env.DB_PORT ? +process.env.DB_PORT : 5430,
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_USERNAME: process.env.DB_USERNAME,
   DB_DATABASE: process.env.DB_DATABASE,

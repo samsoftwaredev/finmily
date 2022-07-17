@@ -11,6 +11,7 @@ import {
   JoinColumn,
   OneToOne,
 } from 'typeorm';
+import { householdProps } from '../utils';
 import HouseholdEventModel from './householdEventModel';
 import HouseholdHistoryModel from './householdHistoryModel';
 import UserHouseholdModel from './userHouseholdModel';
@@ -18,7 +19,7 @@ import UserHouseholdVisibilityModel from './userHouseholdVisibilityModel';
 import UserModel from './userModel';
 
 @Entity('household')
-class HouseholdModel extends BaseEntity {
+class HouseholdModel extends BaseEntity implements householdProps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

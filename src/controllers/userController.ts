@@ -1,14 +1,10 @@
 import { Router, Request, Response } from 'express';
-import {
-  userRequiredProps,
-  HttpStatusCode,
-  userWithIdProps,
-  userProps,
-  userListProps,
-} from '../utils';
+import { HttpStatusCode } from '../utils';
 import { UserService } from '../services';
 import { validateBody } from '../middlewares';
+// to resolve "Cannot find module ../_schema" execute "npm run schema"
 import _schema from '../_schema';
+import { UserModel } from '../models';
 class UserController {
   public router: Router;
   private UserService: UserService;
@@ -21,7 +17,7 @@ class UserController {
 
   public getAll = async (req: Request, res: Response) => {
     try {
-      const users: userListProps = await this.UserService.getAll();
+      const users: UserModel[] = await this.UserService.getAll();
       res.status(HttpStatusCode.OK).send(users);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -31,7 +27,7 @@ class UserController {
   public queryById = async (req: Request, res: Response) => {
     const userId: string = req.params.id;
     try {
-      const user: userWithIdProps = await this.UserService.queryById(userId);
+      const user: UserModel = await this.UserService.queryById(userId);
       res.status(HttpStatusCode.OK).send(user);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -39,9 +35,9 @@ class UserController {
   };
 
   public create = async (req: Request, res: Response) => {
-    const userData: userRequiredProps = req.body;
+    const userData: UserModel = req.body;
     try {
-      const newUser: userWithIdProps = await this.UserService.create(userData);
+      const newUser: UserModel = await this.UserService.create(userData);
       res.status(HttpStatusCode.OK).send(newUser);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -50,9 +46,9 @@ class UserController {
 
   public update = async (req: Request, res: Response) => {
     const userId: string = req.params.id;
-    const userData: userProps = req.body;
+    const userData: UserModel = req.body;
     try {
-      const userUpdated: userWithIdProps = await this.UserService.update(
+      const userUpdated: UserModel = await this.UserService.update(
         userData,
         userId,
       );
@@ -76,10 +72,10 @@ class UserController {
     this.router.get('/:id', this.queryById);
     this.router.post(
       '/create-user',
-      validateBody(_schema.userRequiredProps),
+      validateBody(_schema['userRequiredProps']),
       this.create,
     );
-    this.router.put('/:id', validateBody(_schema.userProps), this.update);
+    this.router.put('/:id', validateBody(_schema['userProps']), this.update);
     this.router.delete('/:id', this.delete);
     this.router.get('/', this.getAll);
   };

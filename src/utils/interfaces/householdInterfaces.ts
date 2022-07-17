@@ -4,24 +4,15 @@ export interface householdProps {
   created_by?: string;
   description?: string;
   picture?: string;
-  blocked_at?: string;
-  deactivated_at?: string;
-  created_at?: string;
-  deleted_at?: string;
-  updated_at?: string;
+  blocked_at?: Date;
+  deactivated_at?: Date;
+  created_at?: Date;
+  deleted_at?: Date;
+  updated_at?: Date;
 }
-
 // used by update household endpoint
-export interface householdWithIdProps extends householdProps {
-  id: string;
-}
 
-export interface householdRequiredProps extends householdProps {
+export interface householdRequiredProps {
   name: string;
   created_by: string;
 }
-
-export interface householdListProps extends householdProps {
-  id: string;
-}
-[];

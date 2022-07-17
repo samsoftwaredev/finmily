@@ -1,2 +1,2 @@
 export { default as Server } from './server';
-export { default as Database } from './database';
+export * from './database';

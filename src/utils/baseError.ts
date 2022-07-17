@@ -12,7 +12,7 @@ export class BaseError extends Error {
     name: string,
     description: string,
     httpCode: HttpStatusCode,
-    isOperational?: boolean,
+    isOperational: boolean = false,
   ) {
     super(description);
     Object.setPrototypeOf(this, new.target.prototype);
@@ -29,10 +29,10 @@ export class BaseError extends Error {
 //free to extend the BaseError
 export class APIError extends BaseError {
   constructor(
-    name,
-    description = 'Internal server error',
-    httpCode = HttpStatusCode.INTERNAL_SERVER_ERROR,
-    isOperational = true,
+    name: string,
+    description: string = 'Internal server error',
+    httpCode: number = HttpStatusCode.INTERNAL_SERVER_ERROR,
+    isOperational: boolean = true,
   ) {
     super(name, description, httpCode, isOperational);
   }

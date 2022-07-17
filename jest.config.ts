@@ -6,6 +6,10 @@ const config: Config.InitialOptions = {
   testEnvironment: 'node',
   testMatch: ['**/*.test.ts'],
   forceExit: true,
+  preset: 'ts-jest',
+  transform: {
+    '^.+\\.(ts|tsx)?$': 'ts-jest',
+  },
   moduleFileExtensions: [...defaults.moduleFileExtensions, 'ts', 'tsx'],
   // clearMocks: true,
 };

@@ -1,16 +1,17 @@
-import { UserRoleType } from '../enum';
+import { GenderType, UserRoleType } from '../enum';
+import { EmailType, UserNameType } from './global';
 
 // used by create user endpoint
 export interface userProps {
-  email?: string;
-  first_name?: string;
-  last_name?: string;
-  middle_name?: string;
-  gender?: string;
-  dob?: string;
-  blocked_at?: string;
-  deactivated_at?: string;
-  last_login?: string;
+  email?: EmailType;
+  first_name?: UserNameType;
+  last_name?: UserNameType;
+  middle_name?: UserNameType;
+  gender?: GenderType;
+  dob?: Date;
+  blocked_at?: Date;
+  deactivated_at?: Date;
+  last_login?: Date;
   is_online?: boolean;
   phone_number?: string;
   country_code?: string;
@@ -20,18 +21,11 @@ export interface userProps {
   role?: UserRoleType;
 }
 
-// used by update user endpoint
-export interface userWithIdProps extends userProps {
-  id: string;
+export interface userRequiredProps {
+  /**
+   * @TJS-format email
+   */
+  email: EmailType;
+  first_name: UserNameType;
+  last_name: UserNameType;
 }
-
-export interface userRequiredProps extends userProps {
-  email: string;
-  first_name: string;
-  last_name: string;
-}
-
-export interface userListProps extends userProps {
-  id: string;
-}
-[];

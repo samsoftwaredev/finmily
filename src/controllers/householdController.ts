@@ -1,14 +1,10 @@
 import { Router, Request, Response } from 'express';
-import {
-  householdRequiredProps,
-  HttpStatusCode,
-  householdWithIdProps,
-  householdProps,
-  householdListProps,
-} from '../utils';
+import { HttpStatusCode } from '../utils';
 import { HouseholdService } from '../services';
 import { validateBody } from '../middlewares';
+// to resolve "Cannot find module ../_schema" execute "npm run schema"
 import _schema from '../_schema';
+import { HouseholdModel } from 'models';
 
 class HouseholdController {
   public router: Router;
@@ -22,8 +18,7 @@ class HouseholdController {
 
   public getAll = async (req: Request, res: Response) => {
     try {
-      const household: householdListProps =
-        await this.HouseholdService.getAll();
+      const household: HouseholdModel[] = await this.HouseholdService.getAll();
       res.status(HttpStatusCode.OK).send(household);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -33,8 +28,9 @@ class HouseholdController {
   public queryById = async (req: Request, res: Response) => {
     const householdId: string = req.params.id;
     try {
-      const household: householdWithIdProps =
-        await this.HouseholdService.queryById(householdId);
+      const household: HouseholdModel = await this.HouseholdService.queryById(
+        householdId,
+      );
       res.status(HttpStatusCode.OK).send(household);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -42,10 +38,11 @@ class HouseholdController {
   };
 
   public create = async (req: Request, res: Response) => {
-    const householdData: householdRequiredProps = req.body;
+    const householdData: HouseholdModel = req.body;
     try {
-      const newHousehold: householdWithIdProps =
-        await this.HouseholdService.create(householdData);
+      const newHousehold: HouseholdModel = await this.HouseholdService.create(
+        householdData,
+      );
       res.status(HttpStatusCode.OK).send(newHousehold);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -54,9 +51,9 @@ class HouseholdController {
 
   public update = async (req: Request, res: Response) => {
     const householdId: string = req.params.id;
-    const householdData: householdProps = req.body;
+    const householdData: HouseholdModel = req.body;
     try {
-      const householdUpdated: householdWithIdProps =
+      const householdUpdated: HouseholdModel =
         await this.HouseholdService.update(householdData, householdId);
       res.status(HttpStatusCode.OK).send(householdUpdated);
     } catch (error) {
@@ -78,10 +75,14 @@ class HouseholdController {
     this.router.get('/:id', this.queryById);
     this.router.post(
       '/create-household',
-      validateBody(_schema.householdRequiredProps),
+      validateBody(_schema['householdRequiredProps']),
       this.create,
     );
-    this.router.put('/:id', validateBody(_schema.householdProps), this.update);
+    this.router.put(
+      '/:id',
+      validateBody(_schema['householdProps']),
+      this.update,
+    );
     this.router.delete('/:id', this.delete);
     this.router.get('/', this.getAll);
   };

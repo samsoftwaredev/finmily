@@ -1,22 +1,19 @@
-import { Database } from '../config';
+import { database } from '../config';
 import { HouseholdModel } from '../models';
-import {
-  HTTP500Error,
-  log,
-  householdWithIdProps,
-  householdRequiredProps,
-  householdProps,
-  householdListProps,
-} from '../utils';
+import { HTTP500Error, log, HTTP404Error, Nullable } from '../utils';
 
 class HouseholdService {
   constructor() {}
 
-  public getAll = async (): Promise<householdListProps> => {
+  public getAll = async (): Promise<HouseholdModel[]> => {
     log.info('Getting all households');
     try {
-      const allHouseholds = await Database.getManager().find(HouseholdModel);
-      log.info('Got all households');
+      const allHouseholds: HouseholdModel[] = await database
+        .getManager()
+        .find(HouseholdModel);
+      log.info('Got all households' + allHouseholds.length);
+      if (allHouseholds.length === 0)
+        throw new HTTP404Error('No households found');
       return allHouseholds;
     } catch (error) {
       log.error(error);
@@ -24,17 +21,17 @@ class HouseholdService {
     }
   };
 
-  public queryById = async (
-    householdId: string,
-  ): Promise<householdWithIdProps> => {
+  public queryById = async (householdId: string): Promise<HouseholdModel> => {
     log.info('Searching for household with id: ' + householdId);
     try {
-      const household: householdWithIdProps =
-        await Database.getManager().findOne(HouseholdModel, {
+      const household: Nullable<HouseholdModel> = await database
+        .getManager()
+        .findOne(HouseholdModel, {
           where: {
             id: householdId,
           },
         });
+      if (!household) throw new HTTP404Error('Household not found');
       log.info('Household found with id: ' + household.id);
       return household;
     } catch (error) {
@@ -44,14 +41,13 @@ class HouseholdService {
   };
 
   public create = async (
-    householdData: householdRequiredProps,
-  ): Promise<householdWithIdProps> => {
+    householdData: HouseholdModel,
+  ): Promise<HouseholdModel> => {
     log.info('Creating household in database');
     try {
-      const newHousehold = Database.getManager().create(
-        HouseholdModel,
-        householdData,
-      );
+      const newHousehold = database
+        .getManager()
+        .create(HouseholdModel, householdData);
       await newHousehold.save();
       log.info('Household was created with id: ' + newHousehold.id);
       return newHousehold;
@@ -62,21 +58,18 @@ class HouseholdService {
   };
 
   public update = async (
-    householdData: householdProps,
+    householdData: HouseholdModel,
     householdId: string,
-  ): Promise<householdWithIdProps> => {
+  ): Promise<HouseholdModel> => {
     log.info('Updating household data with id: ' + householdId);
     try {
-      const household: householdWithIdProps = await this.queryById(householdId);
-      const householdUpdated: householdWithIdProps = {
+      const household: HouseholdModel = await this.queryById(householdId);
+      await database.getManager().save({
         ...household,
         ...householdData,
-      };
-      await Database.getManager().save(householdUpdated);
-      log.info(
-        'Household data was updated. Household id: ' + householdUpdated.id,
-      );
-      return householdUpdated;
+      });
+      log.info('Household data was updated. Household id: ' + household.id);
+      return household;
     } catch (error) {
       log.error(error);
       throw new HTTP500Error('Unable to update household in database');
@@ -88,7 +81,7 @@ class HouseholdService {
   public delete = async (householdId: string): Promise<void> => {
     log.info('Removing household with id: ' + householdId);
     try {
-      await Database.getManager().delete(HouseholdModel, householdId);
+      await database.getManager().delete(HouseholdModel, householdId);
       log.info('Household removed with id' + householdId);
     } catch (error) {
       log.error(error);

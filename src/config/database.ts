@@ -15,32 +15,36 @@ import {
 class Database {
   // appDataSource has to be a static value in order for the
   // "./services" methods to manipulate the DB
-  private static appDataSource = null;
+  appDataSource: DataSource;
+
+  entityList = [
+    UserModel,
+    UserHouseholdModel,
+    UserHouseholdVisibilityModel,
+    SuspiciousActivityModel,
+    InvitationModel,
+    HouseholdModel,
+    HouseholdHistoryModel,
+    HouseholdEventModel,
+    AddressModel,
+  ];
 
   constructor() {}
 
-  static getManager = () => Database.appDataSource.manager;
+  public getManager = () => this.appDataSource.manager;
+
+  public getEntities = () => this.entityList;
 
   public start = async () => {
     try {
-      Database.appDataSource = await new DataSource({
+      this.appDataSource = await new DataSource({
         type: 'postgres',
-        host: process.env.DB_HOST,
-        port: +process.env.DB_PORT,
-        password: process.env.DB_PASSWORD,
-        username: process.env.DB_USERNAME,
-        database: process.env.DB_DATABASE,
-        entities: [
-          UserModel,
-          UserHouseholdModel,
-          UserHouseholdVisibilityModel,
-          SuspiciousActivityModel,
-          InvitationModel,
-          HouseholdModel,
-          HouseholdHistoryModel,
-          HouseholdEventModel,
-          AddressModel,
-        ],
+        host: databaseENV.DB_HOST,
+        port: +databaseENV.DB_PORT,
+        password: databaseENV.DB_PASSWORD,
+        username: databaseENV.DB_USERNAME,
+        database: databaseENV.DB_DATABASE,
+        entities: this.entityList,
         synchronize: true,
         // logging: isDevEnvironment(),
       });
@@ -51,7 +55,7 @@ class Database {
     }
 
     try {
-      await Database.appDataSource.initialize();
+      await this.appDataSource.initialize();
       log.info('Data Source has been initialized');
     } catch (error) {
       log.error(error);
@@ -60,4 +64,5 @@ class Database {
   };
 }
 
-export default Database;
+const database: Database = new Database();
+export { database, Database };

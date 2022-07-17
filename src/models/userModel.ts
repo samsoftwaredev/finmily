@@ -9,7 +9,7 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
-import { validation, GenderType, UserRoleType } from '../utils';
+import { validation, GenderType, UserRoleType, userProps } from '../utils';
 import AddressModel from './addressModel';
 import HouseholdModel from './householdModel';
 import InvitationModel from './invitationModel';
@@ -18,7 +18,7 @@ import UserHouseholdModel from './userHouseholdModel';
 import UserHouseholdVisibilityModel from './userHouseholdVisibilityModel';
 
 @Entity('user')
-class UserModel extends BaseEntity {
+class UserModel extends BaseEntity implements userProps {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
