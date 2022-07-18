@@ -1,28 +1,33 @@
 import dotenv from 'dotenv';
-import { Server } from '../config';
+import { database, Server } from '../config';
 
 dotenv.config({ path: '../../.env.test.local' });
 
 let app: any;
-// const cleanUpDatabase = async () => {
-//   // NOTE: Purge Database, only for testing purposes.
-//   database.getEntities().forEach(async (entity) => {
-//     await database.getManager().getRepository(entity).clear();
-//   });
-// };
+
+const cleanUpDatabase = async () => {
+  // NOTE: Purge Database, only for testing purposes.
+  await database.getEntities().forEach(async (entity) => {
+    await database.getManager().getRepository(entity).clear();
+  });
+};
+
+const startServer = async () => {
+  const server = new Server();
+  await server.start();
+  app = server.getApp();
+};
 
 beforeAll(async () => {
   // Clears the database and adds some testing data.
   // Jest will wait for this promise to resolve before running tests.
-  const server = new Server();
-  await server.start();
-  app = server.getApp();
+  await startServer();
 });
 
-afterAll(() => {
+afterAll(async () => {
   // Clears the database and adds some testing data.
   // Jest will wait for this promise to resolve before running tests.
-  // cleanUpDatabase()
+  await cleanUpDatabase();
 });
 
 // describe('config', () => {

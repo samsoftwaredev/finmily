@@ -9,7 +9,7 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
-import { validation, GenderType, UserRoleType, userProps } from '../utils';
+import { validation, GenderEnum, UserRoleEnum, userProps } from '../utils';
 import AddressModel from './addressModel';
 import HouseholdModel from './householdModel';
 import InvitationModel from './invitationModel';
@@ -53,10 +53,10 @@ class UserModel extends BaseEntity implements userProps {
 
   @Column({
     type: 'enum',
-    enum: GenderType,
+    enum: GenderEnum,
     nullable: true,
   })
-  gender: GenderType;
+  gender: GenderEnum;
 
   @Column({
     type: 'date',
@@ -130,10 +130,10 @@ class UserModel extends BaseEntity implements userProps {
 
   @Column({
     type: 'enum',
-    enum: UserRoleType,
-    default: UserRoleType.USER,
+    enum: UserRoleEnum,
+    default: UserRoleEnum.USER,
   })
-  role: UserRoleType;
+  role: UserRoleEnum;
 
   @OneToMany(() => UserHouseholdModel, (userHousehold) => userHousehold.user)
   userHousehold: UserHouseholdModel[];

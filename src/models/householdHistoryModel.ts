@@ -7,7 +7,7 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import { HouseholdHistoryType } from '../utils';
+import { HouseholdHistoryEnum } from '../utils';
 import HouseholdEventModel from './householdEventModel';
 import HouseholdModel from './householdModel';
 
@@ -18,10 +18,10 @@ class HouseholdHistoryModel extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: HouseholdHistoryType,
+    enum: HouseholdHistoryEnum,
     nullable: false,
   })
-  event_type: HouseholdHistoryType;
+  event_type: HouseholdHistoryEnum;
 
   @Column({
     type: 'boolean',

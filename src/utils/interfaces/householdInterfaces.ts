@@ -1,8 +1,9 @@
-// used by create household endpoint
+import { HouseholdNameType, UUIDType } from './global';
+
 export interface householdProps {
-  id?: string;
-  name?: string;
-  created_by?: string;
+  id?: UUIDType;
+  name?: HouseholdNameType;
+  created_by?: UUIDType;
   description?: string;
   picture?: string;
   blocked_at?: Date;
@@ -11,9 +12,7 @@ export interface householdProps {
   deleted_at?: Date;
   updated_at?: Date;
 }
-// used by update household endpoint
-
-export interface householdRequiredProps {
-  name: string;
-  created_by: string;
+export interface householdRequiredProps extends householdProps {
+  name: HouseholdNameType;
+  created_by: UUIDType;
 }

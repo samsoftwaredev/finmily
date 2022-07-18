@@ -9,7 +9,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { HouseholdEventType } from '../utils';
+import { HouseholdEventEnum } from '../utils';
 import HouseholdHistoryModel from './householdHistoryModel';
 import HouseholdModel from './householdModel';
 
@@ -20,10 +20,10 @@ class HouseholdEventModel extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: HouseholdEventType,
+    enum: HouseholdEventEnum,
     nullable: false,
   })
-  event_type: HouseholdEventType;
+  event_type: HouseholdEventEnum;
 
   @Column({
     type: 'text',

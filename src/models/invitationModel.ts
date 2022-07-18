@@ -9,7 +9,7 @@ import {
   JoinColumn,
   OneToOne,
 } from 'typeorm';
-import { validation, InvitedReasonType } from '../utils';
+import { validation, InvitedReasonEnum } from '../utils';
 import UserModel from './userModel';
 
 @Entity('invitation')
@@ -51,11 +51,11 @@ class InvitationModel extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: InvitedReasonType,
-    default: InvitedReasonType.HOUSEHOLD,
+    enum: InvitedReasonEnum,
+    default: InvitedReasonEnum.HOUSEHOLD,
     nullable: false,
   })
-  invited_to: InvitedReasonType;
+  invited_to: InvitedReasonEnum;
 
   @Column({ type: 'simple-json', nullable: true })
   data: { household_id?: string };

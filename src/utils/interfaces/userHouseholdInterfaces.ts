@@ -1,13 +1,9 @@
-import { ColorScheme } from '../../utils';
+import { ColorSchemeEnum } from '../../utils';
+import { UUIDType } from './global';
 
-// used by create household endpoint
 export interface userHouseholdProps {
-  id?: string;
+  id?: UUIDType;
   is_admin?: boolean;
   looked_at?: Date;
-  color?: ColorScheme;
-}
-// used by update household endpoint
-export interface userHouseholdWithIdProps {
-  id: string;
+  color?: ColorSchemeEnum;
 }

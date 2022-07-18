@@ -7,7 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { userHouseholdProps } from '../utils/interfaces/userHouseholdInterfaces';
-import { ColorScheme } from '../utils';
+import { ColorSchemeEnum } from '../utils';
 import HouseholdModel from './householdModel';
 import UserModel from './userModel';
 
@@ -30,10 +30,10 @@ class UserHouseholdModel extends BaseEntity implements userHouseholdProps {
 
   @Column({
     type: 'enum',
-    enum: ColorScheme,
-    default: ColorScheme.WHITE,
+    enum: ColorSchemeEnum,
+    default: ColorSchemeEnum.WHITE,
   })
-  color: ColorScheme;
+  color: ColorSchemeEnum;
 
   @ManyToOne(() => UserModel, (user) => user.userHousehold)
   @JoinColumn({ name: 'user_id' })

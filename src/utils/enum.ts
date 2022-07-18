@@ -1,4 +1,4 @@
-export enum HouseholdEventType {
+export enum HouseholdEventEnum {
   HOUSEHOLD_CREATED = 'household_created',
   HOUSEHOLD_NAME_UPDATED = 'household_name_updated',
   HOUSEHOLD_DELETED = 'household_deleted',
@@ -14,17 +14,17 @@ export enum HouseholdEventType {
   VIEWED_USER_ACCOUNT = 'viewed_user_account',
 }
 
-export enum HouseholdHistoryType {
+export enum HouseholdHistoryEnum {
   MESSAGES = 'messages',
   HOUSEHOLD_EVENT = 'household_event',
   LEDGER = 'ledger',
 }
 
-export enum InvitedReasonType {
+export enum InvitedReasonEnum {
   HOUSEHOLD = 'joinHousehold',
 }
 
-export enum SuspiciousType {
+export enum SuspiciousEnum {
   LOOKS_LIKE_A_SCAMMER = 'Looks like a scammer',
   ASK_FOR_PHONE_NUMBER_OR_EMAIL = 'Ask for phone number or email',
   SEND_THEIR_PHONE_NUMBER_OR_EMAIL = 'Send their phone number or email',
@@ -35,7 +35,7 @@ export enum SuspiciousType {
   NONE_OF_THE_ABOVE = 'None of the above',
 }
 
-export enum ColorScheme {
+export enum ColorSchemeEnum {
   WHITE = 'white',
   RED = 'red',
   GREEN = 'green',
@@ -45,13 +45,13 @@ export enum ColorScheme {
   YELLOW = 'yellow',
 }
 
-export enum UserRoleType {
+export enum UserRoleEnum {
   SYS_ADMIN = 'sys_admin',
   ADMIN = 'admin',
   USER = 'user',
 }
 
-export enum GenderType {
+export enum GenderEnum {
   MALE = 'male',
   FEMALE = 'female',
 }

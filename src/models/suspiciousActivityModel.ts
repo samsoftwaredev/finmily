@@ -9,7 +9,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { SuspiciousType } from '../utils';
+import { SuspiciousEnum } from '../utils';
 import UserModel from './userModel';
 
 @Entity('suspicious_activity')
@@ -39,10 +39,10 @@ class SuspiciousActivityModel extends BaseEntity {
 
   @Column({
     type: 'enum',
-    enum: SuspiciousType,
+    enum: SuspiciousEnum,
     nullable: false,
   })
-  event_type: SuspiciousType;
+  event_type: SuspiciousEnum;
 
   @CreateDateColumn() // when the activity was created
   created_at: Date;
