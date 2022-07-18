@@ -53,12 +53,16 @@ class SuspiciousActivityModel extends BaseEntity {
   @UpdateDateColumn() // when the user last updated their profile
   updated_at: Date;
 
-  @ManyToOne(() => UserModel, (user) => user.reported_by)
-  @JoinColumn({ name: 'reported_by' })
+  @ManyToOne(() => UserModel, (user) => user.reported_by, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'reported_by', referencedColumnName: 'id' })
   reported_by: UserModel;
 
-  @ManyToOne(() => UserModel, (user) => user.user_id_reported)
-  @JoinColumn({ name: 'user_id_reported' })
+  @ManyToOne(() => UserModel, (user) => user.user_id_reported, {
+    cascade: true,
+  })
+  @JoinColumn({ name: 'user_id_reported', referencedColumnName: 'id' })
   user_id_reported: UserModel;
 }
 

@@ -16,11 +16,13 @@ export type UserNameType = string;
  */
 export type HouseholdNameType = string;
 /**
+ * Must match email format
+ *
  * @TJS-format email
  */
 export type EmailType = string;
 /**
- * Must be a UUID
+ * Must match UUID format
  *
  * @TJS-pattern ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$
  */

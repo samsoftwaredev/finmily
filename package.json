@@ -33,7 +33,7 @@
     "schema": "ts-node ./schemaGenerator.ts",
     "start": "npm run schema && npm run compile && node .",
     "dev": "npm run schema && nodemon --watch './**/*.ts' --exec 'ts-node' src/app.ts",
-    "test": "DOTENV_CONFIG_PATH=.env.test.local jest --setupFiles=dotenv/config --watch"
+    "test": "DOTENV_CONFIG_PATH=.env.test.local jest --runInBand --detectOpenHandles --setupFiles=dotenv/config --watch"
   },
   "author": "Samuel Ruiz",
   "license": "ISC"

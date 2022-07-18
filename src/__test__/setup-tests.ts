@@ -1,41 +1,39 @@
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import { database, Server } from '../config';
 
-dotenv.config({ path: '../../.env.test.local' });
-
+// used by supertest in order to access server endpoints
 let app: any;
 
 const cleanUpDatabase = async () => {
-  // NOTE: Purge Database, only for testing purposes.
-  await database.getEntities().forEach(async (entity) => {
-    await database.getManager().getRepository(entity).clear();
-  });
+  // Clears the database
+  await Promise.all(
+    database.getEntities().map(async (entity) => {
+      try {
+        const repository = await database.getManager().getRepository(entity);
+        const tableName = repository.metadata.tableName;
+        await repository.query(`TRUNCATE TABLE \"${tableName}\" CASCADE;`);
+      } catch (error) {
+        throw new Error(`ERROR: Cleaning test db: ${error}`);
+      }
+    }),
+  );
 };
 
 const startServer = async () => {
+  // Starts the server before any test runs
   const server = new Server();
   await server.start();
   app = server.getApp();
 };
 
 beforeAll(async () => {
-  // Clears the database and adds some testing data.
   // Jest will wait for this promise to resolve before running tests.
   await startServer();
 });
 
 afterAll(async () => {
-  // Clears the database and adds some testing data.
   // Jest will wait for this promise to resolve before running tests.
   await cleanUpDatabase();
 });
-
-// describe('config', () => {
-//   describe('given the server has start', () => {
-//     it('should be defined', async () => {
-//       expect(app).not.toBe(null);
-//     });
-//   });
-// });
 
 export { app };
