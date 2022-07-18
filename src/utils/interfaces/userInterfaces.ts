@@ -3,6 +3,7 @@ import { EmailType, UserNameType } from './global';
 
 // used by create user endpoint
 export interface userProps {
+  id?: string;
   email?: EmailType;
   first_name?: UserNameType;
   last_name?: UserNameType;

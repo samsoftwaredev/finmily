@@ -1,5 +1,6 @@
 // used by create household endpoint
 export interface householdProps {
+  id?: string;
   name?: string;
   created_by?: string;
   description?: string;

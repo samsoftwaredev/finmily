@@ -59,6 +59,7 @@ class Database {
       log.info('Data Source has been initialized');
     } catch (error) {
       log.error(error);
+      console.log(error);
       throw new Error('Error during Data Source initialization');
     }
   };

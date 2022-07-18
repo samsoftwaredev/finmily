@@ -26,6 +26,8 @@ class Server {
     this.postMiddleware();
   }
 
+  getApp = () => this.app;
+
   configuration = () => {
     log.debug('Env variables are set to: ' + !!variablesENV.PORT);
     this.app.set('port', variablesENV.PORT || PORT);
