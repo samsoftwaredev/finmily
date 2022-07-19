@@ -50,7 +50,7 @@ class Server {
   };
 
   postMiddleware = () => {
-    // NOTE: errorHandlerMiddleware be after the routes
+    // NOTE: errorHandlerMiddleware must execute after the routes method
     this.app.use(errorHandlerMiddleware);
   };
 

@@ -30,6 +30,7 @@
   "scripts": {
     "compile": "tsc",
     "compileDev": "tsc -w",
+    "coverage": "DOTENV_CONFIG_PATH=.env.test.local jest --coverage --setupFiles=dotenv/config",
     "schema": "ts-node ./schemaGenerator.ts",
     "start": "npm run schema && npm run compile && node .",
     "dev": "npm run schema && nodemon --watch './**/*.ts' --exec 'ts-node' src/app.ts",

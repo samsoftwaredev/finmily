@@ -12,6 +12,7 @@ const config: Config.InitialOptions = {
     '^.+\\.(ts|tsx)?$': 'ts-jest',
   },
   moduleFileExtensions: [...defaults.moduleFileExtensions, 'ts', 'tsx'],
+  testPathIgnorePatterns: ['src/model/*'],
   // clearMocks: true,
 };
 
