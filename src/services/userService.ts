@@ -66,27 +66,40 @@ class UserService {
     userId: string,
   ): Promise<userProps> => {
     log.info('Updating user data with id: ' + userId);
+
+    const user: ORMEntity<userProps> = await this.queryById(userId);
+
     try {
-      const user: ORMEntity<userProps> = await this.queryById(userId);
-      await database.getManager().save(UserModel, { ...user, ...userData });
-      log.info('User data was updated. User id: ' + user.id);
-      return user;
+      const updatedUser = { ...user, ...userData };
+      await database.getManager().save(UserModel, updatedUser);
+      log.info('User data was updated. User id: ' + updatedUser.id);
+      return updatedUser;
     } catch (error) {
       log.error(error);
       throw new HTTP500Error('Unable to update user in database');
     }
   };
 
-  // TODO: function to soft-delete a user
-
-  public delete = async (userId: string): Promise<void> => {
-    log.info('Removing user with id: ' + userId);
+  public softDelete = async (userId: string): Promise<void> => {
+    log.info('Soft deleting user with id: ' + userId);
     try {
-      await database.getManager().delete(UserModel, userId);
-      log.info('User removed with id' + userId);
+      await database.getManager().softDelete(UserModel, userId);
+      log.info('User soft deleted with id' + userId);
     } catch (error) {
       log.error(error);
-      throw new HTTP500Error('Unable to remove user from database');
+      throw new HTTP500Error('Unable to delete user from database');
+    }
+  };
+
+  public delete = async (userId: string): Promise<void> => {
+    // WARNING: user will be permanently removed from the database
+    log.info('Deleing user with id: ' + userId);
+    try {
+      await database.getManager().delete(UserModel, userId);
+      log.info('User deleted with id' + userId);
+    } catch (error) {
+      log.error(error);
+      throw new HTTP500Error('Unable to delete user from database');
     }
   };
 }

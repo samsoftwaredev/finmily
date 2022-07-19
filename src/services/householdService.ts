@@ -81,7 +81,7 @@ class HouseholdService {
   public delete = async (householdId: string): Promise<void> => {
     log.info('Removing household with id: ' + householdId);
     try {
-      await database.getManager().delete(HouseholdModel, householdId);
+      await database.getManager().softDelete(HouseholdModel, householdId);
       log.info('Household removed with id' + householdId);
     } catch (error) {
       log.error(error);

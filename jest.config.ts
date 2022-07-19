@@ -3,6 +3,7 @@ import { defaults } from 'jest-config';
 // Sync object
 const config: Config.InitialOptions = {
   verbose: true,
+  silent: false,
   testEnvironment: 'node',
   testMatch: ['**/*.test.ts'],
   forceExit: true,
