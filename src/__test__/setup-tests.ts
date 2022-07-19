@@ -3,6 +3,7 @@ import { database, Server } from '../config';
 
 // used by supertest in order to access server endpoints
 let app: any;
+let server: any;
 
 const cleanUpDatabase = async () => {
   // Clears the database
@@ -19,9 +20,14 @@ const cleanUpDatabase = async () => {
   }
 };
 
+const stopServer = async () => {
+  // Starts the server before any test runs
+  server.stop();
+};
+
 const startServer = async () => {
   // Starts the server before any test runs
-  const server = new Server();
+  server = new Server();
   await server.start();
   app = server.getApp();
 };
@@ -34,6 +40,7 @@ beforeAll(async () => {
 afterAll(async () => {
   // Jest will wait for this promise to resolve before running tests.
   await cleanUpDatabase();
+  await stopServer();
 });
 
 export { app };

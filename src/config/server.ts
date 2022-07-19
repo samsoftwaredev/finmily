@@ -11,6 +11,7 @@ import {
 const PORT = 3030;
 // create and setup express app
 class Server {
+  private server: any;
   private app = express.application;
   private userController: UserController;
   private householdController: HouseholdController;
@@ -53,12 +54,16 @@ class Server {
     this.app.use(errorHandlerMiddleware);
   };
 
+  stop = () => {
+    this.server.close();
+  };
+
   start = async () => {
     // start database
     await database.start();
     // start server
     const PORT = this.app.get('port');
-    this.app.listen(PORT, () => {
+    this.server = this.app.listen(PORT, () => {
       log.info('Server listening at port: ' + PORT);
     });
   };
