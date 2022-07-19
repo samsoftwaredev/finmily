@@ -36,6 +36,7 @@ describe('users', () => {
           .put(`${USER_API}/${user.id}`)
           .send({
             first_name: 'Samuel',
+            email: 'samuel_ruiz@gmail.com',
           })
           .expect(HttpStatusCode.OK);
 
@@ -46,7 +47,7 @@ describe('users', () => {
           deactivated_at: null,
           deleted_at: null,
           dob: null,
-          email: 'omar_ruiz@gmail.com',
+          email: 'samuel_ruiz@gmail.com',
           first_name: 'Samuel',
           gender: null,
           id: updatedUser.body.id,
@@ -104,6 +105,83 @@ describe('users', () => {
           role: 'user',
           updated_at: userData.body.updated_at,
         });
+        await deleteUser(user.id);
+      });
+    });
+  });
+
+  describe('create user route', () => {
+    describe('given the user already exist', () => {
+      it('should return a 500', async () => {
+        const userData = {
+          first_name: 'Dexter',
+          last_name: 'Genius',
+          email: 'dexter@lab.com',
+        };
+        const user = await createUser(userData);
+        await supertest(app)
+          .post(`${USER_API}/create-user`)
+          .send(userData)
+          .expect(HttpStatusCode.INTERNAL_SERVER_ERROR);
+        await deleteUser(user.id);
+      });
+    });
+
+    describe('given the user does not exist', () => {
+      it('should return a 200', async () => {
+        const userData = await supertest(app)
+          .post(`${USER_API}/create-user`)
+          .send({
+            first_name: 'Dexter',
+            last_name: 'Genius',
+            email: 'dexter@lab.com',
+          })
+          .expect(HttpStatusCode.OK);
+        expect(userData.body).toStrictEqual({
+          blocked_at: null,
+          country_code: null,
+          created_at: userData.body.created_at,
+          deactivated_at: null,
+          deleted_at: null,
+          dob: null,
+          email: 'dexter@lab.com',
+          first_name: 'Dexter',
+          gender: null,
+          id: userData.body.id,
+          is_2fa_enabled: false,
+          is_email_verified: false,
+          is_online: false,
+          is_phone_verified: false,
+          last_login: userData.body.last_login,
+          last_name: 'Genius',
+          middle_name: null,
+          phone_number: null,
+          role: 'user',
+          updated_at: userData.body.updated_at,
+        });
+        await deleteUser(userData.body.id);
+      });
+    });
+  });
+
+  describe('delete user route', () => {
+    describe('given the user does not exist', () => {
+      it('should return a 500', async () => {
+        const user = await createUser();
+        const userId = 'non-exiting-id';
+        await supertest(app)
+          .delete(`${USER_API}/${userId}`)
+          .expect(HttpStatusCode.INTERNAL_SERVER_ERROR);
+        await deleteUser(user.id);
+      });
+    });
+
+    describe('given the user does exist', () => {
+      it('should return a 200', async () => {
+        const user = await createUser();
+        await supertest(app)
+          .delete(`${USER_API}/${user.id}`)
+          .expect(HttpStatusCode.OK);
         await deleteUser(user.id);
       });
     });
