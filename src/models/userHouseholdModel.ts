@@ -35,12 +35,12 @@ class UserHouseholdModel extends BaseEntity implements userHouseholdProps {
   })
   color: ColorSchemeEnum;
 
-  @ManyToOne(() => UserModel, (user) => user.userHousehold)
+  @ManyToOne(() => UserModel, (user) => user.user_household)
   @JoinColumn({ name: 'user_id' })
   user: UserModel; // this is what is cause the problem with the "$ref": "#/definitions/default_2"
   // basically the library doesn't know how to resolve ManyToMay, OneToMany and One to One relationship
 
-  @ManyToOne(() => HouseholdModel, (household) => household.userHousehold)
+  @ManyToOne(() => HouseholdModel, (household) => household.user_household)
   @JoinColumn({ name: 'household_id' })
   household: HouseholdModel;
 }

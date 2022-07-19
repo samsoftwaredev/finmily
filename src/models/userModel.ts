@@ -136,13 +136,13 @@ class UserModel extends BaseEntity implements userProps {
   role: UserRoleEnum;
 
   @OneToMany(() => UserHouseholdModel, (userHousehold) => userHousehold.user)
-  userHousehold: UserHouseholdModel[];
+  user_household: UserHouseholdModel[];
 
   @OneToMany(
     () => UserHouseholdVisibilityModel,
     (userHouseholdVisibility) => userHouseholdVisibility.user,
   )
-  userHouseholdVisibility: UserHouseholdVisibilityModel[];
+  user_household_visibility: UserHouseholdVisibilityModel[];
 
   @OneToMany(() => HouseholdModel, (household) => household.user)
   household: HouseholdModel[];

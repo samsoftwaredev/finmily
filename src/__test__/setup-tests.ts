@@ -6,17 +6,17 @@ let app: any;
 
 const cleanUpDatabase = async () => {
   // Clears the database
-  await Promise.all(
-    database.getEntities().map(async (entity) => {
-      try {
-        const repository = await database.getManager().getRepository(entity);
-        const tableName = repository.metadata.tableName;
-        await repository.query(`TRUNCATE TABLE \"${tableName}\" CASCADE;`);
-      } catch (error) {
-        throw new Error(`ERROR: Cleaning test db: ${error}`);
-      }
-    }),
-  );
+  const entities = database.getEntities();
+  for (let i = 0; i < entities.length; i++) {
+    const entity = entities[i];
+    try {
+      const repository = await database.getManager().getRepository(entity);
+      const tableName = repository.metadata.tableName;
+      await repository.query(`TRUNCATE TABLE \"${tableName}\" CASCADE;`);
+    } catch (error) {
+      throw new Error(`ERROR: Cleaning test db: ${error}`);
+    }
+  }
 };
 
 const startServer = async () => {

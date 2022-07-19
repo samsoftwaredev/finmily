@@ -74,26 +74,26 @@ class HouseholdModel extends BaseEntity implements householdProps {
     () => UserHouseholdModel,
     (userHousehold) => userHousehold.household,
   )
-  userHousehold: UserHouseholdModel[];
+  user_household: UserHouseholdModel[];
 
   @OneToMany(
     () => UserHouseholdVisibilityModel,
     (userHouseholdVisibility) => userHouseholdVisibility.household,
   )
-  userHouseholdVisibility: UserHouseholdVisibilityModel[];
+  user_household_visibility: UserHouseholdVisibilityModel[];
 
   @OneToMany(
     () => HouseholdEventModel,
     (householdEvent) => householdEvent.household,
   )
-  householdEvent: HouseholdEventModel[];
+  household_event: HouseholdEventModel[];
 
   @OneToOne(
     () => HouseholdHistoryModel,
     (householdHistory) => householdHistory.household,
   )
   @JoinColumn({ name: 'history_id' })
-  householdHistory: HouseholdHistoryModel;
+  household_history: HouseholdHistoryModel;
 }
 
 export default HouseholdModel;

@@ -1,4 +1,11 @@
 export type Nullable<T> = T | undefined | null;
+
+export type ORMEntity<T> = T & {
+  save?: any;
+  update?: any;
+  delete?: any;
+  create?: any;
+};
 /**
  * Names should only include letters
  *

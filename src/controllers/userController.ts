@@ -1,10 +1,14 @@
 import { Router, Request, Response } from 'express';
-import { HttpStatusCode } from '../utils';
+import {
+  HttpStatusCode,
+  userOptionalProps,
+  userProps,
+  userRequiredProps,
+} from '../utils';
 import { UserService } from '../services';
 import { validateBody } from '../middlewares';
 // to resolve "Cannot find module ../_schema" execute "npm run schema"
 import _schema from '../_schema';
-import { UserModel } from '../models';
 class UserController {
   public router: Router;
   private UserService: UserService;
@@ -17,7 +21,7 @@ class UserController {
 
   public getAll = async (req: Request, res: Response) => {
     try {
-      const users: UserModel[] = await this.UserService.getAll();
+      const users: userProps[] = await this.UserService.getAll();
       res.status(HttpStatusCode.OK).send(users);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -27,7 +31,7 @@ class UserController {
   public queryById = async (req: Request, res: Response) => {
     const userId: string = req.params.id;
     try {
-      const user: UserModel = await this.UserService.queryById(userId);
+      const user: userProps = await this.UserService.queryById(userId);
       res.status(HttpStatusCode.OK).send(user);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -35,9 +39,9 @@ class UserController {
   };
 
   public create = async (req: Request, res: Response) => {
-    const userData: UserModel = req.body;
+    const userData: userRequiredProps = req.body;
     try {
-      const newUser: UserModel = await this.UserService.create(userData);
+      const newUser: userProps = await this.UserService.create(userData);
       res.status(HttpStatusCode.OK).send(newUser);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -46,9 +50,9 @@ class UserController {
 
   public update = async (req: Request, res: Response) => {
     const userId: string = req.params.id;
-    const userData: UserModel = req.body;
+    const userData: userOptionalProps = req.body;
     try {
-      const userUpdated: UserModel = await this.UserService.update(
+      const userUpdated: userProps = await this.UserService.update(
         userData,
         userId,
       );

@@ -42,13 +42,13 @@ class UserHouseholdVisibilityModel extends BaseEntity {
   @UpdateDateColumn() // last time user permission were updated
   updated_at: Date;
 
-  @ManyToOne(() => UserModel, (user) => user.userHouseholdVisibility)
+  @ManyToOne(() => UserModel, (user) => user.user_household_visibility)
   @JoinColumn({ name: 'user_id' })
   user: UserModel;
 
   @ManyToOne(
     () => HouseholdModel,
-    (household) => household.userHouseholdVisibility,
+    (household) => household.user_household_visibility,
   )
   @JoinColumn({ name: 'household_id' })
   household: HouseholdModel;

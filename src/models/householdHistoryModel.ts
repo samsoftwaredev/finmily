@@ -34,11 +34,11 @@ class HouseholdHistoryModel extends BaseEntity {
 
   @OneToMany(
     () => HouseholdEventModel,
-    (householdEvent) => householdEvent.householdHistory,
+    (householdEvent) => householdEvent.household_history,
   )
-  householdEvent: HouseholdEventModel[];
+  household_history: HouseholdEventModel[];
 
-  @OneToOne(() => HouseholdModel, (household) => household.householdHistory)
+  @OneToOne(() => HouseholdModel, (household) => household.household_history)
   @JoinColumn({ name: 'household_id' })
   household: HouseholdModel;
 }

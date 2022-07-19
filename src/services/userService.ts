@@ -1,14 +1,23 @@
 import { database } from '../config';
 import { UserModel } from '../models';
-import { log, HTTP500Error, HTTP404Error, Nullable } from '../utils';
+import {
+  log,
+  HTTP500Error,
+  HTTP404Error,
+  Nullable,
+  userProps,
+  userRequiredProps,
+  ORMEntity,
+  userOptionalProps,
+} from '../utils';
 
 class UserService {
   constructor() {}
 
-  public getAll = async (): Promise<UserModel[]> => {
+  public getAll = async (): Promise<userProps[]> => {
     log.info('Getting all users');
     try {
-      const allUsers: UserModel[] = await database.getManager().find(UserModel);
+      const allUsers: userProps[] = await database.getManager().find(UserModel);
       log.info('Got all users' + allUsers.length);
       if (allUsers.length === 0) throw new HTTP404Error('No users found');
       return allUsers;
@@ -18,7 +27,7 @@ class UserService {
     }
   };
 
-  public queryById = async (userId: string): Promise<UserModel> => {
+  public queryById = async (userId: string): Promise<userProps> => {
     log.info('Searching for user with id: ' + userId);
     try {
       const user: Nullable<UserModel> = await database
@@ -37,13 +46,13 @@ class UserService {
     }
   };
 
-  public create = async (userData: UserModel): Promise<UserModel> => {
+  public create = async (userData: userRequiredProps): Promise<userProps> => {
     log.info('Creating user in database');
     try {
-      const newUser: UserModel = database
+      const user: ORMEntity<userRequiredProps> = database
         .getManager()
         .create(UserModel, userData);
-      await newUser.save();
+      const newUser: userProps = await user.save();
       log.info('User was created with id: ' + newUser.id);
       return newUser;
     } catch (error) {
@@ -53,12 +62,12 @@ class UserService {
   };
 
   public update = async (
-    userData: UserModel,
+    userData: userOptionalProps,
     userId: string,
-  ): Promise<UserModel> => {
+  ): Promise<userProps> => {
     log.info('Updating user data with id: ' + userId);
     try {
-      const user: UserModel = await this.queryById(userId);
+      const user: ORMEntity<userProps> = await this.queryById(userId);
       await database.getManager().save(UserModel, { ...user, ...userData });
       log.info('User data was updated. User id: ' + user.id);
       return user;
