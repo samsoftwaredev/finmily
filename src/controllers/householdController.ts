@@ -2,9 +2,9 @@ import { Router, Request, Response } from 'express';
 import { HttpStatusCode } from '../utils';
 import { HouseholdService } from '../services';
 import { validateBody } from '../middlewares';
+import { HouseholdModel } from '../models';
 // to resolve "Cannot find module ../_schema" execute "npm run schema"
 import _schema from '../_schema';
-import { HouseholdModel } from 'models';
 
 class HouseholdController {
   public router: Router;
