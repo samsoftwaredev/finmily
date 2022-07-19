@@ -6,7 +6,7 @@ import {
   userRequiredProps,
 } from '../utils';
 import { UserService } from '../services';
-import { validateSchema, validateParamUUID } from '../middlewares';
+import { validateSchema, validateIdParamUUID } from '../middlewares';
 // to resolve "Cannot find module ../_schema" execute "npm run schema"
 import _schema from '../_schema';
 class UserController {
@@ -72,8 +72,17 @@ class UserController {
     }
   };
 
+  public getUsersFromHousehold = async (req: Request, res: Response) => {
+    // This will get users public information (name, picture)
+  };
+
   public routes = () => {
-    this.router.get('/:id', validateParamUUID, this.queryById);
+    this.router.get('/:id', validateIdParamUUID, this.queryById);
+    this.router.get(
+      '/:id/user',
+      validateIdParamUUID,
+      this.getUsersFromHousehold,
+    );
     this.router.post(
       '/create-user',
       validateSchema(_schema['userRequiredProps']),
@@ -82,10 +91,10 @@ class UserController {
     this.router.put(
       '/:id',
       validateSchema(_schema['userOptionalProps']),
-      validateParamUUID,
+      validateIdParamUUID,
       this.update,
     );
-    this.router.delete('/:id', validateParamUUID, this.delete);
+    this.router.delete('/:id', validateIdParamUUID, this.delete);
     this.router.get('/', this.getAll);
   };
 }

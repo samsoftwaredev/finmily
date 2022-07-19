@@ -6,8 +6,13 @@ export type ORMEntity<T> = T & {
   delete?: any;
   create?: any;
 };
-export interface ID {
+export interface IdProp {
   id: UUIDType;
+}
+
+export interface userHouseholdIdProps {
+  householdId: UUIDType;
+  userId: UUIDType;
 }
 
 /**

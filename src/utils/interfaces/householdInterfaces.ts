@@ -33,7 +33,6 @@ export interface householdProps extends householdOptionalProps {
   household_event: any[];
   household_history: any;
 }
-export interface householdRequiredProps extends householdProps {
+export interface householdRequiredProps extends householdOptionalProps {
   name: HouseholdNameType;
-  created_by: UUIDType;
 }

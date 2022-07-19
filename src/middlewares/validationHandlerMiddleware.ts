@@ -19,11 +19,16 @@ const validationHandlerMiddleware = (
   };
 };
 
-const validateParamUUID = validationHandlerMiddleware(
-  _schema['ID'],
+const validateIdParamUUID = validationHandlerMiddleware(
+  _schema['IdProp'],
   ValidationTypeEnum.PARAMS,
 );
 
-export { validateParamUUID };
+const validateUserHouseholdParamUUID = validationHandlerMiddleware(
+  _schema['userHouseholdIdProps'],
+  ValidationTypeEnum.PARAMS,
+);
+
+export { validateIdParamUUID, validateUserHouseholdParamUUID };
 
 export default validationHandlerMiddleware;

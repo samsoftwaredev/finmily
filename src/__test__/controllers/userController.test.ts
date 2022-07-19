@@ -4,7 +4,7 @@ import { app } from '../setup-tests';
 import { createUser, deleteUser } from '../user-tests';
 
 describe('users', () => {
-  const USER_API = '/api/users';
+  const USER_API = '/api/user';
 
   describe('update user route', () => {
     describe('given an incorrect UUID', () => {

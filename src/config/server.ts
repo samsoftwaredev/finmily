@@ -36,7 +36,7 @@ class Server {
 
   routes = () => {
     // register routes
-    this.app.use('/api/users/', this.userController.router);
+    this.app.use('/api/user/', this.userController.router);
     this.app.use('/api/household/', this.householdController.router);
     this.app.get('/', function (req: Request, res: Response) {
       res.send(new Date().toString());

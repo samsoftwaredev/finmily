@@ -8,6 +8,7 @@ import {
   householdProps,
   householdOptionalProps,
   householdRequiredProps,
+  ORMEntity,
 } from '../utils';
 
 class HouseholdService {
@@ -50,13 +51,13 @@ class HouseholdService {
 
   public create = async (
     householdData: householdRequiredProps,
-  ): Promise<HouseholdModel> => {
+  ): Promise<householdProps> => {
     log.info('Creating household in database');
     try {
-      const newHousehold = database
+      const household: ORMEntity<householdRequiredProps> = database
         .getManager()
         .create(HouseholdModel, householdData);
-      await newHousehold.save();
+      const newHousehold: householdProps = await household.save();
       log.info('Household was created with id: ' + newHousehold.id);
       return newHousehold;
     } catch (error) {
@@ -84,12 +85,22 @@ class HouseholdService {
     }
   };
 
-  // TODO: function to soft-delete a household
-
-  public delete = async (householdId: string): Promise<void> => {
+  public softDelete = async (householdId: string): Promise<void> => {
     log.info('Removing household with id: ' + householdId);
     try {
       await database.getManager().softDelete(HouseholdModel, householdId);
+      log.info('Household removed with id' + householdId);
+    } catch (error) {
+      log.error(error);
+      throw new HTTP500Error('Unable to remove household from database');
+    }
+  };
+
+  public delete = async (householdId: string): Promise<void> => {
+    // WARNING: household will be permanently removed from the database
+    log.info('Removing household with id: ' + householdId);
+    try {
+      await database.getManager().delete(HouseholdModel, householdId);
       log.info('Household removed with id' + householdId);
     } catch (error) {
       log.error(error);
