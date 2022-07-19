@@ -1,14 +1,22 @@
 import { database } from '../config';
 import { HouseholdModel } from '../models';
-import { HTTP500Error, log, HTTP404Error, Nullable } from '../utils';
+import {
+  HTTP500Error,
+  log,
+  HTTP404Error,
+  Nullable,
+  householdProps,
+  householdOptionalProps,
+  householdRequiredProps,
+} from '../utils';
 
 class HouseholdService {
   constructor() {}
 
-  public getAll = async (): Promise<HouseholdModel[]> => {
+  public getAll = async (): Promise<householdProps[]> => {
     log.info('Getting all households');
     try {
-      const allHouseholds: HouseholdModel[] = await database
+      const allHouseholds: householdProps[] = await database
         .getManager()
         .find(HouseholdModel);
       log.info('Got all households' + allHouseholds.length);
@@ -21,7 +29,7 @@ class HouseholdService {
     }
   };
 
-  public queryById = async (householdId: string): Promise<HouseholdModel> => {
+  public queryById = async (householdId: string): Promise<householdProps> => {
     log.info('Searching for household with id: ' + householdId);
     try {
       const household: Nullable<HouseholdModel> = await database
@@ -41,7 +49,7 @@ class HouseholdService {
   };
 
   public create = async (
-    householdData: HouseholdModel,
+    householdData: householdRequiredProps,
   ): Promise<HouseholdModel> => {
     log.info('Creating household in database');
     try {
@@ -58,12 +66,12 @@ class HouseholdService {
   };
 
   public update = async (
-    householdData: HouseholdModel,
+    householdData: householdOptionalProps,
     householdId: string,
-  ): Promise<HouseholdModel> => {
+  ): Promise<householdProps> => {
     log.info('Updating household data with id: ' + householdId);
     try {
-      const household: HouseholdModel = await this.queryById(householdId);
+      const household: householdProps = await this.queryById(householdId);
       await database.getManager().save({
         ...household,
         ...householdData,

@@ -7,6 +7,18 @@ describe('users', () => {
   const USER_API = '/api/users';
 
   describe('update user route', () => {
+    describe('given an incorrect UUID', () => {
+      it('should return a 400', async () => {
+        const userId = 'non-exiting-id';
+        await supertest(app)
+          .put(`${USER_API}/${userId}`)
+          .send({
+            first_name: 'Samuel',
+          })
+          .expect(HttpStatusCode.BAD_REQUEST);
+      });
+    });
+
     describe('given the user does not exist', () => {
       it('should return a 404', async () => {
         const user = await createUser({
@@ -14,7 +26,7 @@ describe('users', () => {
           last_name: 'Ruiz',
           email: 'omar_ruiz@gmail.com',
         });
-        const userId = 'non-exiting-id';
+        const userId = 'e5e51bf0-06ee-4d89-ae58-c9c92dc8a1d7';
         await supertest(app)
           .put(`${USER_API}/${userId}`)
           .send({
@@ -68,9 +80,18 @@ describe('users', () => {
   });
 
   describe('get user route', () => {
+    describe('given the user id is wrong', () => {
+      it('should return a 400', async () => {
+        const userId = 'non-exiting-id';
+        await supertest(app)
+          .get(`${USER_API}/${userId}`)
+          .expect(HttpStatusCode.BAD_REQUEST);
+      });
+    });
+
     describe('given the user does not exist', () => {
       it('should return a 404', async () => {
-        const userId = 'non-exiting-id';
+        const userId = 'e5e51bf0-06ee-4d89-ae58-c9c92dc8a1d7';
         await supertest(app)
           .get(`${USER_API}/${userId}`)
           .expect(HttpStatusCode.NOT_FOUND);
@@ -165,13 +186,13 @@ describe('users', () => {
   });
 
   describe('delete user route', () => {
-    describe('given the user does not exist', () => {
-      it('should return a 500', async () => {
+    describe('given the id pass is wrong', () => {
+      it('should return a 400', async () => {
         const user = await createUser();
         const userId = 'non-exiting-id';
         await supertest(app)
           .delete(`${USER_API}/${userId}`)
-          .expect(HttpStatusCode.INTERNAL_SERVER_ERROR);
+          .expect(HttpStatusCode.BAD_REQUEST);
         await deleteUser(user.id);
       });
     });
@@ -182,7 +203,15 @@ describe('users', () => {
         await supertest(app)
           .delete(`${USER_API}/${user.id}`)
           .expect(HttpStatusCode.OK);
-        await deleteUser(user.id);
+      });
+    });
+
+    describe('given the user does not exist', () => {
+      it('should return a 404', async () => {
+        const userId = 'e5e51bf0-06ee-4d89-ae58-c9c92dc8a1d7';
+        await supertest(app)
+          .delete(`${USER_API}/${userId}`)
+          .expect(HttpStatusCode.NOT_FOUND);
       });
     });
   });

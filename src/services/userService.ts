@@ -94,6 +94,9 @@ class UserService {
   public delete = async (userId: string): Promise<void> => {
     // WARNING: user will be permanently removed from the database
     log.info('Deleing user with id: ' + userId);
+    // check if user does exist first before deleting it
+    await this.queryById(userId);
+
     try {
       await database.getManager().delete(UserModel, userId);
       log.info('User deleted with id' + userId);

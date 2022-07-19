@@ -1,10 +1,15 @@
 import { Router, Request, Response } from 'express';
-import { HttpStatusCode } from '../utils';
+import {
+  householdOptionalProps,
+  householdProps,
+  householdRequiredProps,
+  HttpStatusCode,
+} from '../utils';
 import { HouseholdService } from '../services';
-import { validateBody } from '../middlewares';
-import { HouseholdModel } from '../models';
+import { validateSchema } from '../middlewares';
 // to resolve "Cannot find module ../_schema" execute "npm run schema"
 import _schema from '../_schema';
+import { validateParamUUID } from '../middlewares';
 
 class HouseholdController {
   public router: Router;
@@ -18,7 +23,7 @@ class HouseholdController {
 
   public getAll = async (req: Request, res: Response) => {
     try {
-      const household: HouseholdModel[] = await this.HouseholdService.getAll();
+      const household: householdProps[] = await this.HouseholdService.getAll();
       res.status(HttpStatusCode.OK).send(household);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -28,7 +33,7 @@ class HouseholdController {
   public queryById = async (req: Request, res: Response) => {
     const householdId: string = req.params.id;
     try {
-      const household: HouseholdModel = await this.HouseholdService.queryById(
+      const household: householdProps = await this.HouseholdService.queryById(
         householdId,
       );
       res.status(HttpStatusCode.OK).send(household);
@@ -38,9 +43,9 @@ class HouseholdController {
   };
 
   public create = async (req: Request, res: Response) => {
-    const householdData: HouseholdModel = req.body;
+    const householdData: householdRequiredProps = req.body;
     try {
-      const newHousehold: HouseholdModel = await this.HouseholdService.create(
+      const newHousehold: householdProps = await this.HouseholdService.create(
         householdData,
       );
       res.status(HttpStatusCode.OK).send(newHousehold);
@@ -51,9 +56,9 @@ class HouseholdController {
 
   public update = async (req: Request, res: Response) => {
     const householdId: string = req.params.id;
-    const householdData: HouseholdModel = req.body;
+    const householdData: householdOptionalProps = req.body;
     try {
-      const householdUpdated: HouseholdModel =
+      const householdUpdated: householdProps =
         await this.HouseholdService.update(householdData, householdId);
       res.status(HttpStatusCode.OK).send(householdUpdated);
     } catch (error) {
@@ -72,18 +77,19 @@ class HouseholdController {
   };
 
   public routes = () => {
-    this.router.get('/:id', this.queryById);
+    this.router.get('/:id', validateParamUUID, this.queryById);
     this.router.post(
       '/create-household',
-      validateBody(_schema['householdRequiredProps']),
+      validateSchema(_schema['householdRequiredProps']),
       this.create,
     );
     this.router.put(
       '/:id',
-      validateBody(_schema['householdProps']),
+      validateSchema(_schema['householdOptionalProps']),
+      validateParamUUID,
       this.update,
     );
-    this.router.delete('/:id', this.delete);
+    this.router.delete('/:id', validateParamUUID, this.delete);
     this.router.get('/', this.getAll);
   };
 }
