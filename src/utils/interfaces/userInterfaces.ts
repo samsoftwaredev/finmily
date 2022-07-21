@@ -33,7 +33,7 @@ export interface userOptionalProps {
   user_id_invited?: any;
 }
 
-export interface userProps {
+export interface userProps extends userOptionalProps {
   id: UUIDType;
   email: EmailType;
   first_name: UserNameType;

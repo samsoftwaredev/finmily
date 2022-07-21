@@ -4,9 +4,22 @@ import { app } from '../setup-tests';
 import { createUser, deleteUser } from '../user-tests';
 
 describe('users', () => {
-  const USER_API = '/api/users';
+  const API = '/api/user';
 
   describe('update user route', () => {
+    describe('given an incorrect UUID', () => {
+      it('should return a 400', async () => {
+        const userId = 'non-exiting-id';
+
+        await supertest(app)
+          .put(`${API}/${userId}`)
+          .send({
+            first_name: 'Samuel',
+          })
+          .expect(HttpStatusCode.BAD_REQUEST);
+      });
+    });
+
     describe('given the user does not exist', () => {
       it('should return a 404', async () => {
         const user = await createUser({
@@ -14,13 +27,15 @@ describe('users', () => {
           last_name: 'Ruiz',
           email: 'omar_ruiz@gmail.com',
         });
-        const userId = 'non-exiting-id';
+        const userId = 'e5e51bf0-06ee-4d89-ae58-c9c92dc8a1d7';
+
         await supertest(app)
-          .put(`${USER_API}/${userId}`)
+          .put(`${API}/${userId}`)
           .send({
             first_name: 'Samuel',
           })
           .expect(HttpStatusCode.NOT_FOUND);
+
         await deleteUser(user.id);
       });
     });
@@ -32,14 +47,14 @@ describe('users', () => {
           last_name: 'Ruiz',
           email: 'omar_ruiz@gmail.com',
         });
+
         const updatedUser = await supertest(app)
-          .put(`${USER_API}/${user.id}`)
+          .put(`${API}/${user.id}`)
           .send({
             first_name: 'Samuel',
             email: 'samuel_ruiz@gmail.com',
           })
           .expect(HttpStatusCode.OK);
-
         expect(updatedUser.body).toStrictEqual({
           blocked_at: null,
           country_code: null,
@@ -62,17 +77,29 @@ describe('users', () => {
           role: 'user',
           updated_at: updatedUser.body.updated_at,
         });
+
         await deleteUser(user.id);
       });
     });
   });
 
   describe('get user route', () => {
+    describe('given the user id is wrong', () => {
+      it('should return a 400', async () => {
+        const userId = 'non-exiting-id';
+
+        await supertest(app)
+          .get(`${API}/${userId}`)
+          .expect(HttpStatusCode.BAD_REQUEST);
+      });
+    });
+
     describe('given the user does not exist', () => {
       it('should return a 404', async () => {
-        const userId = 'non-exiting-id';
+        const userId = 'e5e51bf0-06ee-4d89-ae58-c9c92dc8a1d7';
+
         await supertest(app)
-          .get(`${USER_API}/${userId}`)
+          .get(`${API}/${userId}`)
           .expect(HttpStatusCode.NOT_FOUND);
       });
     });
@@ -81,8 +108,9 @@ describe('users', () => {
       it('should return a 200', async () => {
         const user = await createUser();
         const userData = await supertest(app)
-          .get(`${USER_API}/${user.id}`)
+          .get(`${API}/${user.id}`)
           .expect(HttpStatusCode.OK);
+
         expect(userData.body).toStrictEqual({
           blocked_at: null,
           country_code: null,
@@ -105,6 +133,7 @@ describe('users', () => {
           role: 'user',
           updated_at: userData.body.updated_at,
         });
+
         await deleteUser(user.id);
       });
     });
@@ -119,10 +148,12 @@ describe('users', () => {
           email: 'dexter@lab.com',
         };
         const user = await createUser(userData);
+
         await supertest(app)
-          .post(`${USER_API}/create-user`)
+          .post(`${API}/create-user`)
           .send(userData)
           .expect(HttpStatusCode.INTERNAL_SERVER_ERROR);
+
         await deleteUser(user.id);
       });
     });
@@ -130,7 +161,7 @@ describe('users', () => {
     describe('given the user does not exist', () => {
       it('should return a 200', async () => {
         const userData = await supertest(app)
-          .post(`${USER_API}/create-user`)
+          .post(`${API}/create-user`)
           .send({
             first_name: 'Dexter',
             last_name: 'Genius',
@@ -159,19 +190,22 @@ describe('users', () => {
           role: 'user',
           updated_at: userData.body.updated_at,
         });
+
         await deleteUser(userData.body.id);
       });
     });
   });
 
   describe('delete user route', () => {
-    describe('given the user does not exist', () => {
-      it('should return a 500', async () => {
+    describe('given the id pass is wrong', () => {
+      it('should return a 400', async () => {
         const user = await createUser();
         const userId = 'non-exiting-id';
+
         await supertest(app)
-          .delete(`${USER_API}/${userId}`)
-          .expect(HttpStatusCode.INTERNAL_SERVER_ERROR);
+          .delete(`${API}/${userId}`)
+          .expect(HttpStatusCode.BAD_REQUEST);
+
         await deleteUser(user.id);
       });
     });
@@ -179,10 +213,20 @@ describe('users', () => {
     describe('given the user does exist', () => {
       it('should return a 200', async () => {
         const user = await createUser();
+
         await supertest(app)
-          .delete(`${USER_API}/${user.id}`)
+          .delete(`${API}/${user.id}`)
           .expect(HttpStatusCode.OK);
-        await deleteUser(user.id);
+        // NOTE: no need to delete user
+      });
+    });
+
+    describe('given the user does not exist', () => {
+      it('should return a 404', async () => {
+        const userId = 'e5e51bf0-06ee-4d89-ae58-c9c92dc8a1d7';
+        await supertest(app)
+          .delete(`${API}/${userId}`)
+          .expect(HttpStatusCode.NOT_FOUND);
       });
     });
   });

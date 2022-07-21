@@ -9,6 +9,8 @@ import {
   userRequiredProps,
   ORMEntity,
   userOptionalProps,
+  APIError,
+  HttpStatusCode,
 } from '../utils';
 
 class UserService {
@@ -23,6 +25,8 @@ class UserService {
       return allUsers;
     } catch (error) {
       log.error(error);
+      if (error.httpCode === HttpStatusCode.NOT_FOUND)
+        throw new APIError(error.name, error.description, error.httpCode);
       throw new HTTP500Error('Unable to retrieve all users from database');
     }
   };
@@ -42,7 +46,9 @@ class UserService {
       return user;
     } catch (error) {
       log.error(error);
-      throw new HTTP404Error('Unable to find user in database');
+      if (error.httpCode === HttpStatusCode.NOT_FOUND)
+        throw new APIError(error.name, error.description, error.httpCode);
+      throw new HTTP500Error('Unable to find user in database');
     }
   };
 
@@ -94,9 +100,12 @@ class UserService {
   public delete = async (userId: string): Promise<void> => {
     // WARNING: user will be permanently removed from the database
     log.info('Deleing user with id: ' + userId);
+    // check if user does exist first before deleting it
+    await this.queryById(userId);
+
     try {
       await database.getManager().delete(UserModel, userId);
-      log.info('User deleted with id' + userId);
+      log.info('User deleted with id: ' + userId);
     } catch (error) {
       log.error(error);
       throw new HTTP500Error('Unable to delete user from database');

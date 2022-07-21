@@ -56,6 +56,13 @@ export enum GenderEnum {
   FEMALE = 'female',
 }
 
+export enum ValidationTypeEnum {
+  BODY = 'body',
+  PARAMS = 'params',
+  HEADERS = 'headers',
+  COOKIES = 'cookies',
+}
+
 export enum HttpStatusCode {
   /**
   * Hypertext Transfer Protocol (HTTP) response status codes.

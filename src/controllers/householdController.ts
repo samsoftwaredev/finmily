@@ -1,24 +1,39 @@
 import { Router, Request, Response } from 'express';
-import { HttpStatusCode } from '../utils';
-import { HouseholdService } from '../services';
-import { validateBody } from '../middlewares';
-import { HouseholdModel } from '../models';
+import {
+  householdOptionalProps,
+  householdProps,
+  householdRequiredProps,
+  HttpStatusCode,
+  userHouseholdProps,
+  userProps,
+} from '../utils';
+import {
+  HouseholdService,
+  UserHouseholdService,
+  UserService,
+} from '../services';
+import { validateSchema } from '../middlewares';
 // to resolve "Cannot find module ../_schema" execute "npm run schema"
 import _schema from '../_schema';
+import { validateIdParamUUID } from '../middlewares';
 
 class HouseholdController {
   public router: Router;
-  private HouseholdService: HouseholdService;
+  private householdService: HouseholdService;
+  private userHouseholdService: UserHouseholdService;
+  private userService: UserService;
 
   constructor() {
     this.router = Router();
-    this.HouseholdService = new HouseholdService();
+    this.householdService = new HouseholdService();
+    this.userHouseholdService = new UserHouseholdService();
+    this.userService = new UserService();
     this.routes();
   }
 
   public getAll = async (req: Request, res: Response) => {
     try {
-      const household: HouseholdModel[] = await this.HouseholdService.getAll();
+      const household: householdProps[] = await this.householdService.getAll();
       res.status(HttpStatusCode.OK).send(household);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -27,8 +42,9 @@ class HouseholdController {
 
   public queryById = async (req: Request, res: Response) => {
     const householdId: string = req.params.id;
+
     try {
-      const household: HouseholdModel = await this.HouseholdService.queryById(
+      const household: householdProps = await this.householdService.queryById(
         householdId,
       );
       res.status(HttpStatusCode.OK).send(household);
@@ -38,9 +54,10 @@ class HouseholdController {
   };
 
   public create = async (req: Request, res: Response) => {
-    const householdData: HouseholdModel = req.body;
+    const householdData: householdRequiredProps = req.body;
+
     try {
-      const newHousehold: HouseholdModel = await this.HouseholdService.create(
+      const newHousehold: householdProps = await this.householdService.create(
         householdData,
       );
       res.status(HttpStatusCode.OK).send(newHousehold);
@@ -49,12 +66,35 @@ class HouseholdController {
     }
   };
 
+  public createHouseholdForUser = async (req: Request, res: Response) => {
+    // TODO: this endpoint can only be used by admin
+    const householdData: householdRequiredProps = req.body;
+    const userId: string = req.params.id;
+
+    try {
+      const user: userProps = await this.userService.queryById(userId);
+      const household: householdProps = await this.householdService.create({
+        ...householdData,
+        user,
+      });
+      const userHousehold: userHouseholdProps =
+        await this.userHouseholdService.create({
+          household,
+          user,
+        });
+      res.status(HttpStatusCode.OK).send(userHousehold);
+    } catch (error) {
+      res.status(error.httpCode).json(error);
+    }
+  };
+
   public update = async (req: Request, res: Response) => {
     const householdId: string = req.params.id;
-    const householdData: HouseholdModel = req.body;
+    const householdData: householdOptionalProps = req.body;
+
     try {
-      const householdUpdated: HouseholdModel =
-        await this.HouseholdService.update(householdData, householdId);
+      const householdUpdated: householdProps =
+        await this.householdService.update(householdData, householdId);
       res.status(HttpStatusCode.OK).send(householdUpdated);
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -63,8 +103,9 @@ class HouseholdController {
 
   public delete = async (req: Request, res: Response) => {
     const householdId: string = req.params.id;
+
     try {
-      await this.HouseholdService.delete(householdId);
+      await this.householdService.delete(householdId);
       res.status(HttpStatusCode.OK).send();
     } catch (error) {
       res.status(error.httpCode).json(error);
@@ -72,18 +113,30 @@ class HouseholdController {
   };
 
   public routes = () => {
-    this.router.get('/:id', this.queryById);
+    this.router.get('/:id', validateIdParamUUID, this.queryById);
+
     this.router.post(
       '/create-household',
-      validateBody(_schema['householdRequiredProps']),
+      validateSchema(_schema['householdRequiredProps']),
       this.create,
     );
+
+    this.router.post(
+      '/assign-created-household/:id',
+      validateSchema(_schema['householdRequiredProps']),
+      validateIdParamUUID,
+      this.createHouseholdForUser,
+    );
+
     this.router.put(
       '/:id',
-      validateBody(_schema['householdProps']),
+      validateSchema(_schema['householdOptionalProps']),
+      validateIdParamUUID,
       this.update,
     );
-    this.router.delete('/:id', this.delete);
+
+    this.router.delete('/:id', validateIdParamUUID, this.delete);
+
     this.router.get('/', this.getAll);
   };
 }

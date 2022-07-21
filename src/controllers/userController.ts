@@ -6,7 +6,7 @@ import {
   userRequiredProps,
 } from '../utils';
 import { UserService } from '../services';
-import { validateBody } from '../middlewares';
+import { validateSchema, validateIdParamUUID } from '../middlewares';
 // to resolve "Cannot find module ../_schema" execute "npm run schema"
 import _schema from '../_schema';
 class UserController {
@@ -40,6 +40,7 @@ class UserController {
 
   public create = async (req: Request, res: Response) => {
     const userData: userRequiredProps = req.body;
+
     try {
       const newUser: userProps = await this.UserService.create(userData);
       res.status(HttpStatusCode.OK).send(newUser);
@@ -51,6 +52,7 @@ class UserController {
   public update = async (req: Request, res: Response) => {
     const userId: string = req.params.id;
     const userData: userOptionalProps = req.body;
+
     try {
       const userUpdated: userProps = await this.UserService.update(
         userData,
@@ -64,6 +66,7 @@ class UserController {
 
   public delete = async (req: Request, res: Response) => {
     const userId: string = req.params.id;
+
     try {
       await this.UserService.delete(userId);
       res.status(HttpStatusCode.OK).send();
@@ -72,19 +75,34 @@ class UserController {
     }
   };
 
+  public getUsersFromHousehold = async (req: Request, res: Response) => {
+    // This will get users public information (name, picture)
+  };
+
   public routes = () => {
-    this.router.get('/:id', this.queryById);
+    this.router.get('/:id', validateIdParamUUID, this.queryById);
+
+    this.router.get(
+      '/:id/user',
+      validateIdParamUUID,
+      this.getUsersFromHousehold,
+    );
+
     this.router.post(
       '/create-user',
-      validateBody(_schema['userRequiredProps']),
+      validateSchema(_schema['userRequiredProps']),
       this.create,
     );
+
     this.router.put(
       '/:id',
-      validateBody(_schema['userOptionalProps']),
+      validateSchema(_schema['userOptionalProps']),
+      validateIdParamUUID,
       this.update,
     );
-    this.router.delete('/:id', this.delete);
+
+    this.router.delete('/:id', validateIdParamUUID, this.delete);
+
     this.router.get('/', this.getAll);
   };
 }
