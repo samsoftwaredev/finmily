@@ -9,6 +9,8 @@ import {
   householdOptionalProps,
   householdRequiredProps,
   ORMEntity,
+  HttpStatusCode,
+  APIError,
 } from '../utils';
 
 class HouseholdService {
@@ -26,6 +28,8 @@ class HouseholdService {
       return allHouseholds;
     } catch (error) {
       log.error(error);
+      if (error.httpCode === HttpStatusCode.NOT_FOUND)
+        throw new APIError(error.name, error.description, error.httpCode);
       throw new HTTP500Error('Unable to retrieve all household from database');
     }
   };
@@ -33,18 +37,16 @@ class HouseholdService {
   public queryById = async (householdId: string): Promise<householdProps> => {
     log.info('Searching for household with id: ' + householdId);
     try {
-      const household: Nullable<HouseholdModel> = await database
+      const household: Nullable<householdProps> = await database
         .getManager()
-        .findOne(HouseholdModel, {
-          where: {
-            id: householdId,
-          },
-        });
+        .findOne(HouseholdModel, { where: { id: householdId } });
       if (!household) throw new HTTP404Error('Household not found');
       log.info('Household found with id: ' + household.id);
       return household;
     } catch (error) {
       log.error(error);
+      if (error.httpCode === HttpStatusCode.NOT_FOUND)
+        throw new APIError(error.name, error.description, error.httpCode);
       throw new HTTP500Error('Unable to find household in database');
     }
   };
@@ -71,14 +73,14 @@ class HouseholdService {
     householdId: string,
   ): Promise<householdProps> => {
     log.info('Updating household data with id: ' + householdId);
+    const household: householdProps = await this.queryById(householdId);
     try {
-      const household: householdProps = await this.queryById(householdId);
-      await database.getManager().save({
-        ...household,
-        ...householdData,
-      });
-      log.info('Household data was updated. Household id: ' + household.id);
-      return household;
+      const updatedHousehold = { ...household, ...householdData };
+      await database.getManager().save(HouseholdModel, updatedHousehold);
+      log.info(
+        'Household data was updated. Household id: ' + updatedHousehold.id,
+      );
+      return updatedHousehold;
     } catch (error) {
       log.error(error);
       throw new HTTP500Error('Unable to update household in database');
@@ -87,9 +89,10 @@ class HouseholdService {
 
   public softDelete = async (householdId: string): Promise<void> => {
     log.info('Removing household with id: ' + householdId);
+    await this.queryById(householdId);
     try {
       await database.getManager().softDelete(HouseholdModel, householdId);
-      log.info('Household removed with id' + householdId);
+      log.info('Household removed with id: ' + householdId);
     } catch (error) {
       log.error(error);
       throw new HTTP500Error('Unable to remove household from database');
@@ -99,6 +102,7 @@ class HouseholdService {
   public delete = async (householdId: string): Promise<void> => {
     // WARNING: household will be permanently removed from the database
     log.info('Removing household with id: ' + householdId);
+    await this.queryById(householdId);
     try {
       await database.getManager().delete(HouseholdModel, householdId);
       log.info('Household removed with id' + householdId);

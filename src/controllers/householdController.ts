@@ -64,12 +64,12 @@ class HouseholdController {
     }
   };
 
-  public createForUser = async (req: Request, res: Response) => {
+  public createHouseholdForUser = async (req: Request, res: Response) => {
     // TODO: this endpoint can only be used by admin
     const householdData: householdRequiredProps = req.body;
     const userId: string = req.params.id;
+    const user: userProps = await this.userService.queryById(userId);
     try {
-      const user: userProps = await this.userService.queryById(userId);
       const household: householdProps = await this.householdService.create({
         ...householdData,
         user,
@@ -109,24 +109,29 @@ class HouseholdController {
 
   public routes = () => {
     this.router.get('/:id', validateIdParamUUID, this.queryById);
+
     this.router.post(
       '/create-household',
       validateSchema(_schema['householdRequiredProps']),
       this.create,
     );
+
     this.router.post(
-      '/create-household/:id',
+      '/assign-created-household/:id',
       validateSchema(_schema['householdRequiredProps']),
       validateIdParamUUID,
-      this.createForUser,
+      this.createHouseholdForUser,
     );
+
     this.router.put(
       '/:id',
       validateSchema(_schema['householdOptionalProps']),
       validateIdParamUUID,
       this.update,
     );
+
     this.router.delete('/:id', validateIdParamUUID, this.delete);
+
     this.router.get('/', this.getAll);
   };
 }

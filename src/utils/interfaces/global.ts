@@ -26,7 +26,7 @@ export type UserNameType = string;
 /**
  * Names should only include letters, digits and spaces
  *
- * @TJS-pattern ^[a-zA-Z\-\s\d]+$
+ * @TJS-pattern ^\w[\w.\-#&\s]*$
  * @minLength 2
  * @maxLength 64
  */

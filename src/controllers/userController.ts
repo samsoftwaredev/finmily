@@ -78,23 +78,28 @@ class UserController {
 
   public routes = () => {
     this.router.get('/:id', validateIdParamUUID, this.queryById);
+
     this.router.get(
       '/:id/user',
       validateIdParamUUID,
       this.getUsersFromHousehold,
     );
+
     this.router.post(
       '/create-user',
       validateSchema(_schema['userRequiredProps']),
       this.create,
     );
+
     this.router.put(
       '/:id',
       validateSchema(_schema['userOptionalProps']),
       validateIdParamUUID,
       this.update,
     );
+
     this.router.delete('/:id', validateIdParamUUID, this.delete);
+
     this.router.get('/', this.getAll);
   };
 }

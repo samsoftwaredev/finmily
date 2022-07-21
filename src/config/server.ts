@@ -2,7 +2,11 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { database } from './database';
 import { log, variablesENV } from '../utils';
-import { UserController, HouseholdController } from '../controllers';
+import {
+  UserController,
+  HouseholdController,
+  UserHouseholdController,
+} from '../controllers';
 import {
   errorHandlerMiddleware,
   requestListenerMiddleware,
@@ -15,11 +19,13 @@ class Server {
   private app = express.application;
   private userController: UserController;
   private householdController: HouseholdController;
+  private userHouseholdController: UserHouseholdController;
 
   constructor() {
     this.app = express();
     this.userController = new UserController();
     this.householdController = new HouseholdController();
+    this.userHouseholdController = new UserHouseholdController();
 
     this.configuration();
     this.preMiddleware();
@@ -38,6 +44,7 @@ class Server {
     // register routes
     this.app.use('/api/user/', this.userController.router);
     this.app.use('/api/household/', this.householdController.router);
+    this.app.use('/api/household/', this.userHouseholdController.router);
     this.app.get('/', function (req: Request, res: Response) {
       res.send(new Date().toString());
     });

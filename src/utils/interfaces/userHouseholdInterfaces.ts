@@ -1,13 +1,15 @@
-import { ColorSchemeEnum } from '../../utils';
+import { ColorSchemeEnum } from '../enum';
 import { UUIDType } from './global';
+import { householdProps } from './householdInterfaces';
+import { userProps } from './userInterfaces';
 
 export interface userHouseholdOptionalProps {
   id?: UUIDType;
   is_admin?: boolean;
   looked_at?: Date;
   color?: ColorSchemeEnum;
-  user?: any;
-  household?: any;
+  user?: userProps;
+  household?: householdProps;
 }
 
 export interface userHouseholdProps extends userHouseholdOptionalProps {
@@ -15,11 +17,11 @@ export interface userHouseholdProps extends userHouseholdOptionalProps {
   is_admin: boolean;
   looked_at: Date;
   color: ColorSchemeEnum;
-  user: any;
-  household: any;
+  user: userProps;
+  household: householdProps;
 }
 
 export interface userHouseholdRequiredProps extends userHouseholdOptionalProps {
-  user: any;
-  household: any;
+  user: userProps;
+  household: householdProps;
 }
