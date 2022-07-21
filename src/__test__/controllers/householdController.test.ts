@@ -5,29 +5,35 @@ import { app } from '../setup-tests';
 import { createUser } from '../user-tests';
 
 describe('household', () => {
-  const HOUSEHOLD_API = '/api/household';
+  const API = '/api/household';
+
   describe('retrieve household route', () => {
     describe('given an incorrect UUID', () => {
       it('should return a 400', async () => {
         const householdId = 'non-exiting-id';
+
         await supertest(app)
-          .get(`${HOUSEHOLD_API}/${householdId}`)
+          .get(`${API}/${householdId}`)
           .expect(HttpStatusCode.BAD_REQUEST);
       });
     });
+
     describe('given the household does not exits', () => {
       it('should return a 404', async () => {
         const householdId = 'eab22204-69ff-417e-b870-b54a8f72baea';
+
         await supertest(app)
-          .get(`${HOUSEHOLD_API}/${householdId}`)
+          .get(`${API}/${householdId}`)
           .expect(HttpStatusCode.NOT_FOUND);
       });
     });
+
     describe('given the household does exits', () => {
       it('should return a 200', async () => {
         const household = await createHousehold();
+
         await supertest(app)
-          .get(`${HOUSEHOLD_API}/${household.id}`)
+          .get(`${API}/${household.id}`)
           .expect(HttpStatusCode.OK);
         await deleteHousehold(household.id);
       });
@@ -38,31 +44,36 @@ describe('household', () => {
     describe('given an incorrect UUID', () => {
       it('should return a 400', async () => {
         const householdId = 'non-exiting-id';
+
         await supertest(app)
-          .put(`${HOUSEHOLD_API}/${householdId}`)
+          .put(`${API}/${householdId}`)
           .send({
             name: 'Family Dollar',
           })
           .expect(HttpStatusCode.BAD_REQUEST);
       });
     });
+
     describe('given the household does not exits', () => {
       it('should return a 404', async () => {
         const householdId = 'eab22204-69ff-417e-b870-b54a8f72baea';
+
         await supertest(app)
-          .put(`${HOUSEHOLD_API}/${householdId}`)
+          .put(`${API}/${householdId}`)
           .send({
             name: 'Family Dollar',
           })
           .expect(HttpStatusCode.NOT_FOUND);
       });
     });
+
     describe('given the household does exits', () => {
       it('should return a 200', async () => {
         const household = await createHousehold();
         const newHouseholdName = 'Family Dollar';
+
         const res = await supertest(app)
-          .put(`${HOUSEHOLD_API}/${household.id}`)
+          .put(`${API}/${household.id}`)
           .send({
             name: newHouseholdName,
           })
@@ -77,21 +88,23 @@ describe('household', () => {
     describe('given an incorrect UUID', () => {
       it('should return a 400', async () => {
         await supertest(app)
-          .post(`${HOUSEHOLD_API}/create-household`)
+          .post(`${API}/create-household`)
           .send({
             invalidProp: 'Family Dollar',
           })
           .expect(HttpStatusCode.BAD_REQUEST);
       });
     });
+
     describe('given the household does not exits', () => {
       it('should return a 200', async () => {
         const householdData = {
           name: 'Family Dollar',
           description: 'Testing the description',
         };
+
         const res = await supertest(app)
-          .post(`${HOUSEHOLD_API}/create-household`)
+          .post(`${API}/create-household`)
           .send(householdData)
           .expect(HttpStatusCode.OK);
         expect(res.body).toStrictEqual({
@@ -105,14 +118,16 @@ describe('household', () => {
           created_at: res.body.created_at,
           updated_at: res.body.updated_at,
         });
+
         await deleteHousehold(res.body.id);
       });
     });
+
     describe('given the household does not exits, create household for user', () => {
       it('should return a 200', async () => {
         const user = await createUser();
         await supertest(app)
-          .post(`${HOUSEHOLD_API}/assign-created-household/${user.id}`)
+          .post(`${API}/assign-created-household/${user.id}`)
           .send({
             name: 'Family Dollar',
           })
@@ -128,24 +143,29 @@ describe('household', () => {
     describe('given an incorrect UUID', () => {
       it('should return a 400', async () => {
         const householdId = 'non-exiting-id';
+
         await supertest(app)
-          .delete(`${HOUSEHOLD_API}/${householdId}`)
+          .delete(`${API}/${householdId}`)
           .expect(HttpStatusCode.BAD_REQUEST);
       });
     });
+
     describe('given the household does not exits', () => {
       it('should return a 404', async () => {
         const householdId = 'eab32204-69ff-417e-b870-b54a8f72baea';
+
         await supertest(app)
-          .delete(`${HOUSEHOLD_API}/${householdId}`)
+          .delete(`${API}/${householdId}`)
           .expect(HttpStatusCode.NOT_FOUND);
       });
     });
+
     describe('given the household does exits', () => {
       it('should return a 200', async () => {
         const household = await createHousehold();
+
         await supertest(app)
-          .delete(`${HOUSEHOLD_API}/${household.id}`)
+          .delete(`${API}/${household.id}`)
           .expect(HttpStatusCode.OK);
       });
     });
