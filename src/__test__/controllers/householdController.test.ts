@@ -2,7 +2,8 @@ import supertest from 'supertest';
 import { HttpStatusCode } from '../../utils';
 import { createHousehold, deleteHousehold } from '../household-tests';
 import { app } from '../setup-tests';
-import { createUser } from '../user-tests';
+import { deleteUserHousehold } from '../user-household-tests';
+import { createUser, deleteUser } from '../user-tests';
 
 describe('household', () => {
   const API = '/api/household';
@@ -125,16 +126,19 @@ describe('household', () => {
 
     describe('given the household does not exits, create household for user', () => {
       it('should return a 200', async () => {
-        const user = await createUser();
-        await supertest(app)
-          .post(`${API}/assign-created-household/${user.id}`)
+        const newUser = await createUser();
+
+        const res = await supertest(app)
+          .post(`${API}/assign-created-household/${newUser.id}`)
           .send({
             name: 'Family Dollar',
           })
           .expect(HttpStatusCode.OK);
-        // TODO: in order to remove household, you must first remove
-        // the userHousehold first before
-        // await deleteHousehold(res.body.household.id);
+
+        const { user, household } = res.body;
+        await deleteUserHousehold(household, user);
+        await deleteHousehold(res.body.household.id);
+        await deleteUser(user.id);
       });
     });
   });
