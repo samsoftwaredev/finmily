@@ -40,6 +40,7 @@ class UserController {
 
   public create = async (req: Request, res: Response) => {
     const userData: userRequiredProps = req.body;
+
     try {
       const newUser: userProps = await this.UserService.create(userData);
       res.status(HttpStatusCode.OK).send(newUser);
@@ -51,6 +52,7 @@ class UserController {
   public update = async (req: Request, res: Response) => {
     const userId: string = req.params.id;
     const userData: userOptionalProps = req.body;
+
     try {
       const userUpdated: userProps = await this.UserService.update(
         userData,
@@ -64,6 +66,7 @@ class UserController {
 
   public delete = async (req: Request, res: Response) => {
     const userId: string = req.params.id;
+
     try {
       await this.UserService.delete(userId);
       res.status(HttpStatusCode.OK).send();

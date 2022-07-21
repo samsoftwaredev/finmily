@@ -8,7 +8,10 @@ import { createUser } from './user-tests';
 import { createHousehold } from './household-tests';
 
 const userHouseholdService = new UserHouseholdService();
-const createUserHousehold = async (household, user) => {
+const createUserHousehold = async (
+  household: householdProps,
+  user: userProps,
+) => {
   const h: householdProps = household || (await createHousehold());
   const u: userProps = user || (await createUser());
   const data: userHouseholdRequiredProps = { household: h, user: u };
@@ -16,7 +19,10 @@ const createUserHousehold = async (household, user) => {
   return res;
 };
 
-const deleteUserHousehold = async (household, user) => {
+const deleteUserHousehold = async (
+  household: householdProps,
+  user: userProps,
+) => {
   const h: householdProps = household || (await createHousehold());
   const u: userProps = user || (await createUser());
   const res = await userHouseholdService.delete(h, u);

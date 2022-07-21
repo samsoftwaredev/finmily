@@ -42,6 +42,7 @@ class HouseholdController {
 
   public queryById = async (req: Request, res: Response) => {
     const householdId: string = req.params.id;
+
     try {
       const household: householdProps = await this.householdService.queryById(
         householdId,
@@ -54,6 +55,7 @@ class HouseholdController {
 
   public create = async (req: Request, res: Response) => {
     const householdData: householdRequiredProps = req.body;
+
     try {
       const newHousehold: householdProps = await this.householdService.create(
         householdData,
@@ -68,8 +70,9 @@ class HouseholdController {
     // TODO: this endpoint can only be used by admin
     const householdData: householdRequiredProps = req.body;
     const userId: string = req.params.id;
-    const user: userProps = await this.userService.queryById(userId);
+
     try {
+      const user: userProps = await this.userService.queryById(userId);
       const household: householdProps = await this.householdService.create({
         ...householdData,
         user,
@@ -88,6 +91,7 @@ class HouseholdController {
   public update = async (req: Request, res: Response) => {
     const householdId: string = req.params.id;
     const householdData: householdOptionalProps = req.body;
+
     try {
       const householdUpdated: householdProps =
         await this.householdService.update(householdData, householdId);
@@ -99,6 +103,7 @@ class HouseholdController {
 
   public delete = async (req: Request, res: Response) => {
     const householdId: string = req.params.id;
+
     try {
       await this.householdService.delete(householdId);
       res.status(HttpStatusCode.OK).send();
