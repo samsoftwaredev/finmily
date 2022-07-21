@@ -1,7 +1,5 @@
 import { Router, Request, Response } from 'express';
-
 import { UserHouseholdService } from '../services';
-// to resolve "Cannot find module ../_schema" execute "npm run schema"
 import _schema from '../_schema';
 import { validateUserHouseholdParamUUID } from '../middlewares';
 

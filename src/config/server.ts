@@ -12,8 +12,6 @@ import {
   requestListenerMiddleware,
 } from '../middlewares';
 
-const PORT = 3030;
-// create and setup express app
 class Server {
   private server: any;
   private app = express.application;
@@ -37,7 +35,7 @@ class Server {
 
   configuration = () => {
     log.debug('Env variables are set to: ' + !!variablesENV.PORT);
-    this.app.set('port', variablesENV.PORT || PORT);
+    this.app.set('port', variablesENV.PORT);
   };
 
   routes = () => {
@@ -66,9 +64,7 @@ class Server {
   };
 
   start = async () => {
-    // start database
     await database.start();
-    // start server
     const PORT = this.app.get('port');
     this.server = this.app.listen(PORT, () => {
       log.info('Server listening at port: ' + PORT);

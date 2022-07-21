@@ -13,7 +13,6 @@ import {
   UserService,
 } from '../services';
 import { validateSchema } from '../middlewares';
-// to resolve "Cannot find module ../_schema" execute "npm run schema"
 import _schema from '../_schema';
 import { validateIdParamUUID } from '../middlewares';
 

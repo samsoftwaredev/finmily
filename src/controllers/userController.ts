@@ -7,7 +7,6 @@ import {
 } from '../utils';
 import { UserService } from '../services';
 import { validateSchema, validateIdParamUUID } from '../middlewares';
-// to resolve "Cannot find module ../_schema" execute "npm run schema"
 import _schema from '../_schema';
 class UserController {
   public router: Router;
