@@ -39,7 +39,8 @@
     "schema": "ts-node ./schemaGenerator.ts",
     "start": "node ./dist/app.js",
     "dev": "npm run schema && nodemon --watch './**/*.ts' --exec 'ts-node' src/app.ts",
-    "test": "DOTENV_CONFIG_PATH=.env.test.local jest --runInBand --detectOpenHandles --setupFiles=dotenv/config --verbose --watch",
+    "localtest": "DOTENV_CONFIG_PATH=.env.test.local jest --runInBand --detectOpenHandles --setupFiles=dotenv/config --verbose --watch",
+    "test": "jest --runInBand --detectOpenHandles --setupFiles=dotenv/config",
     "log": "heroku logs --tail"
   },
   "author": "Samuel Ruiz",
