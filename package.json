@@ -30,6 +30,7 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
+    "tsc": "./node_modules/typescript/bin/tsc",
     "compile": "tsc",
     "compileDev": "tsc -w",
     "coverage": "DOTENV_CONFIG_PATH=.env.test.local jest --coverage --setupFiles=dotenv/config",

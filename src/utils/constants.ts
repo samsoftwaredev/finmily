@@ -1,5 +1,5 @@
 const variablesENV = {
-  PORT: process.env.PORT ? +process.env.PORT : 3000,
+  PORT: process.env.APP_PORT ? +process.env.APP_PORT : process.env.PORT,
   PRODUCTION: 'production',
   DEVELOPMENT: 'development',
   TESTING: 'testing',
