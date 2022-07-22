@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import cors from 'cors';
+// import cors from 'cors';
 import { database } from './database';
 import { log, variablesENV } from '../utils';
 import {
@@ -50,7 +50,7 @@ class Server {
 
   preMiddleware = () => {
     this.app.use(express.json());
-    this.app.use(cors());
+    // this.app.use(cors());
     this.app.use(requestListenerMiddleware);
   };
 
