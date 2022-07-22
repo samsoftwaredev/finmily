@@ -1,4 +1,4 @@
-To run test:
+To run tests:
 `npm test`
 
 To run development locally:
@@ -8,7 +8,7 @@ To run production code:
 
 ```
 npm run postinstall
-npm run master
+npm start
 ```
 
 To push to production run:

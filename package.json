@@ -34,10 +34,9 @@
     "tsc": "./node_modules/typescript/bin/tsc",
     "compile": "tsc",
     "postinstall": "npm run schema && npm run compile",
-    "compileDev": "tsc -w",
+    "heroku-postbuild": "npm run postinstall",
     "coverage": "DOTENV_CONFIG_PATH=.env.test.local jest --coverage --setupFiles=dotenv/config",
     "schema": "ts-node ./schemaGenerator.ts",
-    "heroku-postbuild": "npm run postinstall",
     "start": "node ./dist/app.js",
     "dev": "npm run schema && nodemon --watch './**/*.ts' --exec 'ts-node' src/app.ts",
     "test": "DOTENV_CONFIG_PATH=.env.test.local jest --runInBand --detectOpenHandles --setupFiles=dotenv/config --verbose --watch"
