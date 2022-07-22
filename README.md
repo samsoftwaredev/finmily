@@ -7,7 +7,7 @@ To run development locally:
 To run production code:
 
 ```
-npm run build
+npm run postinstall
 npm run master
 ```
 
