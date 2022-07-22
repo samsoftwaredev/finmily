@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 // import cors from 'cors';
 import { database } from './database';
-import { log, variablesENV } from '../utils';
+import { log } from '../utils';
 import {
   UserController,
   HouseholdController,
@@ -25,18 +25,12 @@ class Server {
     this.householdController = new HouseholdController();
     this.userHouseholdController = new UserHouseholdController();
 
-    this.configuration();
     this.preMiddleware();
     this.routes();
     this.postMiddleware();
   }
 
   getApp = () => this.app;
-
-  configuration = () => {
-    log.debug('Env variables are set to: ' + !!variablesENV.PORT);
-    this.app.set('port', variablesENV.PORT);
-  };
 
   routes = () => {
     // register routes
@@ -65,7 +59,7 @@ class Server {
 
   start = async () => {
     await database.start();
-    const PORT = this.app.get('port');
+    const PORT = process.env.APP_PORT || process.env.PORT;
     this.server = this.app.listen(PORT, () => {
       log.info('Server listening at port: ' + PORT);
     });

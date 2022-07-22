@@ -1,25 +1,18 @@
-const variablesENV = {
-  PORT: process.env.APP_PORT ? +process.env.APP_PORT : process.env.PORT,
-  PRODUCTION: 'production',
-  DEVELOPMENT: 'development',
-  TESTING: 'testing',
+export const environmentsENV = {
+  IS_PRODUCTION: process.env.NODE_ENV === 'production',
+  IS_DEV: process.env.NODE_ENV === 'development',
+  IS_TESTING: process.env.NODE_ENV === 'testing',
 };
 
-const environmentsENV = {
-  IS_PRODUCTION: process.env.NODE_ENV === variablesENV.PRODUCTION,
-  IS_DEV: process.env.NODE_ENV === variablesENV.DEVELOPMENT,
-  IS_TESTING: process.env.NODE_ENV === variablesENV.TESTING,
-};
-
-const databaseENV = {
+export const databaseENV = {
   DB_HOST: process.env.DB_HOST,
-  DB_PORT: process.env.DB_PORT ? +process.env.DB_PORT : 5430,
+  DB_PORT: process.env.DB_PORT ? +process.env.DB_PORT : 5432,
   DB_PASSWORD: process.env.DB_PASSWORD,
   DB_USERNAME: process.env.DB_USERNAME,
   DB_DATABASE: process.env.DB_DATABASE,
 };
 
-const validation = {
+export const validation = {
   MAX_EMAIL_LENGTH: 254,
   MAX_URL_LENGTH: 2048,
   MAX_USER_FULL_NAME_LENGTH: 128,
@@ -31,5 +24,3 @@ const validation = {
   MAX_STATE_LENGTH: 64,
   MAX_POSTAL_CODE_LENGTH: 5,
 };
-
-export { validation, variablesENV, databaseENV, environmentsENV };
