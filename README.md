@@ -16,3 +16,6 @@ To push to production run:
 
 To see production logs:
 `heroku logs --tail`
+
+Postman collection: ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+https://www.getpostman.com/collections/e2ec1c9d0796384dbd8e
