@@ -32,10 +32,12 @@
   "scripts": {
     "tsc": "./node_modules/typescript/bin/tsc",
     "compile": "tsc",
+    "postinstall": "npm run compile",
     "compileDev": "tsc -w",
     "coverage": "DOTENV_CONFIG_PATH=.env.test.local jest --coverage --setupFiles=dotenv/config",
     "schema": "ts-node ./schemaGenerator.ts",
-    "start": "npm run schema && npm run compile && node .",
+    "build": "npm run postinstall",
+    "start": "npm run schema && node .",
     "dev": "npm run schema && nodemon --watch './**/*.ts' --exec 'ts-node' src/app.ts",
     "test": "DOTENV_CONFIG_PATH=.env.test.local jest --runInBand --detectOpenHandles --setupFiles=dotenv/config --verbose --watch"
   },
